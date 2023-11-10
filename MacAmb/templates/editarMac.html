@@ -1,0 +1,37 @@
+{% extends 'template.html' %}
+
+{% block title %} Editar Mac {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-md-4 offset-md-4">
+    <h2>Editar Dispositivo</h2>
+        <div class="card" >
+        <div class="card-body">
+            <form action="edicionMac" method="POST">{% csrf_token %}
+             <input type="hidden" name="id" value="{{ mac.id }}" readonly>
+             <div class="form-group">
+                 <label for="mac">MAC (formato: XX:XX:XX:XX:XX:XX)</label>
+                 <input value="{{ mac.mac }}" class="form-control" type="text" name="mac" id="mac" minlength="17" maxlength="17" pattern="[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}" required>
+             </div>
+             <div class="form-group">
+                 <label for="nombre"> Nombre </label>
+                 <input class="form-control" type="text" name="nombre" id="nombre" required value="{{ mac.nombre }}">
+             </div>
+             <div class="form-group">
+                 <label for="comentario"> Comentario </label>
+                 <input class="form-control" type="text" name="comentario" id="comentario" value="{{ mac.comentario }}">
+             </div>
+             <br>
+             <div class="form-group row px-4 justify-content-between" >
+                 <button class="btn btn-primary col-5" type="submit">Editar</button>
+                 <a href="/"  class=" btn btn-secondary col-5 " > Volver </a>
+             </div>
+            </form>
+           </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
