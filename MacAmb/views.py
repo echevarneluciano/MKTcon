@@ -1,29 +1,29 @@
 from django.shortcuts import render, redirect
 from .models import Mac
+from django.contrib import messages
+from .devices import radius
 
 # Create your views here.
 
 
 def home(request):
     macs = Mac.objects.all()
-    return render(request, 'gestion.html', {'macs': macs})
+    return render(request, 'gestion.html',   {'macs': macs})
 
 
 def agregarMac(request):
     mac = request.POST['mac']
     nombre = request.POST['nombre']
     comentario = request.POST['comentario']
-    Mac.objects.create(
-        mac=mac,
-        nombre=nombre,
-        comentario=comentario
-    )
+    radius.agregarMac(mac, nombre, comentario)
+    messages.success(request, 'Dispositivo agregado')
     return redirect('/')
 
 
 def borrarMac(request, id):
     mac = Mac.objects.get(id=id)
     mac.delete()
+    messages.success(request, 'Dispositivo borrado')
     return redirect('/')
 
 
@@ -41,4 +41,5 @@ def edicionMac(request):
         nombre=nombre,
         comentario=comentario
     )
+    messages.success(request, 'Dispositivo editado')
     return redirect('/')

@@ -5,6 +5,14 @@
 {% block body %}
 <div class="row">
     <div class="col-md-6 col-sm-12 col-xl-4 col-lg-4">
+      {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong> 
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+      {% endif %}
     <h2>Alta Dispositivos</h2>
     <div class="card">
       <div class="card-body">
@@ -36,6 +44,7 @@
          <thead>
             <tr>
               <th hidden> </th>
+              <th>#</th>
               <th>MAC</th>
               <th>Nombre</th>
               <th>Comentario</th>
@@ -47,12 +56,13 @@
             {% for mac in macs %}
             <tr>
               <td hidden>{{ mac.id }}</td>
+              <td>{{ forloop.counter }}</td>
               <td>{{ mac.mac }}</td>
               <td>{{ mac.nombre }}</td>
               <td>{{ mac.comentario }}</td>
               <td>{{ mac.fechaCreacion }}</td>
               <td><a class="btn btn-secondary" href="editarMac/{{ mac.id }}">Editar</a></td>
-              <td><a class="btn btn-danger" href="borrarMac/{{ mac.id }}">Borrar</a></td>
+              <td><a class="btn btn-danger btEliminar" href="borrarMac/{{ mac.id }}">Borrar</a></td>
             </tr>
             {% endfor %}
          </tbody>
