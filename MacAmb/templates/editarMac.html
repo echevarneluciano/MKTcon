@@ -10,6 +10,7 @@
         <div class="card-body">
             <form action="edicionMac" method="POST">{% csrf_token %}
              <input type="hidden" name="id" value="{{ mac.id }}" readonly>
+             <input type="hidden" name="macVieja" value="{{ mac.mac }}" readonly>
              <div class="form-group">
                  <label for="mac">MAC (formato: XX:XX:XX:XX:XX:XX)</label>
                  <input value="{{ mac.mac }}" class="form-control" type="text" name="mac" id="mac" minlength="17" maxlength="17" pattern="[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}" required>
