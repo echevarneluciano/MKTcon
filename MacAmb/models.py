@@ -11,7 +11,7 @@ class Mac(models.Model):
     nombre = models.CharField(max_length=50)
     comentario = models.CharField(max_length=100)
     fechaCreacion = models.DateField(auto_now_add=True)
-    fehcaModificacion = models.DateField(auto_now=True)
+    fechaModificacion = models.DateField(auto_now=True)
 
     def __str__(self):
         return self.mac.__str__() + ', ' + self.nombre+', ' + self.comentario

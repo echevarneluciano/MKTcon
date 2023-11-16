@@ -4,7 +4,7 @@
 
 {% block body %}
 <div class="row">
-    <div class="col-md-6 col-sm-12 col-xl-4 col-lg-4">
+    <div class="col-md-6 col-sm-12 col-xl-3 col-lg-3">
       {% if messages %}
       {% for message in messages %}
       <div class="alert alert-warning alert-dismissible fade show" role="alert">
@@ -18,16 +18,12 @@
       <div class="card-body">
        <form action="agregarMac" method="POST">{% csrf_token %}
         <div class="form-group">
-            <label for="mac">MAC (formato: XX:XX:XX:XX:XX:XX)</label>
-            <input class="form-control" type="text" name="mac" id="mac" minlength="17" maxlength="17" pattern="[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}" required>
+            <label for="mac">MAC</label>
+            <input placeholder="XX:XX:XX:XX:XX:XX" class="form-control" type="text" name="mac" id="mac" minlength="17" maxlength="17" pattern="[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}" required>
         </div>
         <div class="form-group">
             <label for="nombre"> Nombre </label>
-            <input class="form-control" type="text" name="nombre" id="nombre" required>
-        </div>
-        <div class="form-group">
-            <label for="comentario"> Comentario </label>
-            <input class="form-control" type="text" name="comentario" id="comentario">
+            <input class="form-control" type="text" name="nombre" id="nombre" placeholder="Nombre usuario_Detalle" required>
         </div>
         <br>
         <div class="form-group row px-4">
@@ -37,7 +33,7 @@
       </div>
     </div>
     </div>
-    <div class="col-md-6 col-sm-12 col-xl-8 col-lg-8">
+    <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
      <h2>Lista Dispositivos</h2>
      <div class="table-responsive py-2">
        <table class="table table-striped" id="dTable">
@@ -47,8 +43,9 @@
               <th>#</th>
               <th>MAC</th>
               <th>Nombre</th>
-              <th>Comentario</th>
+              <th>Alta/Modificado</th>
               <th>Fecha Alta</th>
+              <th>Fecha Modificado</th>
               <th></th>
               <th></th>
             </tr>
@@ -62,6 +59,7 @@
               <td>{{ mac.nombre }}</td>
               <td>{{ mac.comentario }}</td>
               <td>{{ mac.fechaCreacion }}</td>
+              <td>{{ mac.fechaModificacion }}</td>
               <td><a class="btn btn-secondary" href="editarMac/{{ mac.id }}">Editar</a></td>
               <td><a class="btn btn-danger btEliminar" href="borrarMac/{{ mac.id }}">Borrar</a></td>
             </tr>

@@ -1,8 +1,10 @@
+import datetime
 from django.shortcuts import render, redirect
 from .models import Mac
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.decorators import login_required
 from .devices import radius
 
 
@@ -15,7 +17,7 @@ def signup(request):
 
 def signout(request):
     logout(request)
-    return redirect('/login')
+    return redirect('login')
 
 
 def loginPage(request):
@@ -27,18 +29,19 @@ def logear(request):
         nombre1 = request.POST['nombre']
         password1 = request.POST['password']
         user1 = authenticate(username=nombre1, password=password1)
+        if(user1.is_staff is False):
+            messages.error(request, 'Error, usuario no autorizado, solicite permisos al administrador')
+            return redirect('/login')
         if (user1 is not None):
-            if (user1.is_active):
-                print(user1.is_authenticated)
-                login(request, user1)
-            messages.success(request, 'Cuenta logeada')
+            login(request, user1)
+            messages.success(request, 'Usuario logeado')
             return redirect('/')
         else:
-            messages.error(request, 'Error, en iniciar sesion')
+            messages.error(request, 'Error, al iniciar sesion')
             return redirect('/login')
     except Exception as e:
         print(e)
-        messages.error(request, 'Error en iniciar sesion')
+        messages.error(request, 'Error al iniciar sesion')
         return redirect('/login')
 
 
@@ -51,34 +54,35 @@ def registrar(request):
             user = User.objects.create_user(
                 username=nombre, password=password1)
             user.save()
-        print(user)
-        login(request, user)
-        messages.success(request, 'Cuenta creada')
-        return redirect('/')
+            messages.success(request, 'Cuenta creada')
+            return redirect('/login')
+        else:
+            messages.error(
+                request, 'Error, las contraseñas no coinciden')
+            return redirect('/signup')
     except:
         messages.error(
             request, 'Error, en registrar cuenta o cuenta existente')
         return redirect('/signup')
 
-
+@login_required
 def home(request):
     macs = Mac.objects.all()
     return render(request, 'gestion.html',   {'macs': macs})
 
-
+@login_required
 def agregarMac(request):
     try:
         mac = request.POST['mac']
         nombre = request.POST['nombre']
-        comentario = request.POST['comentario']
-        radius.agregarMac(mac, nombre)
-        Mac.objects.create(mac=mac, nombre=nombre, comentario=comentario)
+        radius.agregarMac(mac, nombre) 
+        Mac.objects.create(mac=mac, nombre=nombre, comentario= request.user.__str__())
         messages.success(request, 'Dispositivo agregado')
     except:
         messages.error(request, 'Error, en listar dispositivos')
     return redirect('/')
 
-
+@login_required
 def borrarMac(request, id):
     try:
         mac = Mac.objects.get(id=id)
@@ -89,25 +93,27 @@ def borrarMac(request, id):
         messages.error(request, 'Error, el dispositivo no fue borrado')
     return redirect('/')
 
-
+@login_required
 def editarMac(request, id):
     mac = Mac.objects.get(id=id)
     return render(request, 'editarMac.html', {'mac': mac})
 
-
+@login_required
 def edicionMac(request):
     try:
         macVieja = request.POST['macVieja']
         mac = request.POST['mac']
         nombre = request.POST['nombre']
-        comentario = request.POST['comentario']
+        comentario = request.user.__str__()
         radius.modificarMac(macVieja, mac, nombre)
         Mac.objects.filter(id=request.POST['id']).update(
             mac=mac,
             nombre=nombre,
-            comentario=comentario
+            comentario=comentario,
+            fechaModificacion=datetime.datetime.now() 
         )
         messages.success(request, 'Dispositivo editado')
-    except:
+    except Exception as e:
+        print(e)
         messages.error(request, 'Error, el dispositivo no fue editado')
     return redirect('/')
