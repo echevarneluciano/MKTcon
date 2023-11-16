@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from .devices import radius
 
+
 # Create your views here.
 
 
@@ -17,7 +18,7 @@ def signout(request):
     return redirect('/login')
 
 
-def login(request):
+def loginPage(request):
     return render(request, 'login.html')
 
 
@@ -25,16 +26,19 @@ def logear(request):
     try:
         nombre1 = request.POST['nombre']
         password1 = request.POST['password']
-        user = authenticate(request, username=nombre1, password=password1)
-        if (user is not None):
-            login(request, user)
+        user1 = authenticate(username=nombre1, password=password1)
+        if (user1 is not None):
+            if (user1.is_active):
+                print(user1.is_authenticated)
+                login(request, user1)
             messages.success(request, 'Cuenta logeada')
             return redirect('/')
         else:
             messages.error(request, 'Error, en iniciar sesion')
             return redirect('/login')
-    except:
-        messages.error(request, 'Error, en iniciar sesion')
+    except Exception as e:
+        print(e)
+        messages.error(request, 'Error en iniciar sesion')
         return redirect('/login')
 
 
