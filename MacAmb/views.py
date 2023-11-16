@@ -1,9 +1,60 @@
 from django.shortcuts import render, redirect
 from .models import Mac
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.contrib.auth import login, logout, authenticate
 from .devices import radius
 
 # Create your views here.
+
+
+def signup(request):
+    return render(request, 'signup.html')
+
+
+def signout(request):
+    logout(request)
+    return redirect('/login')
+
+
+def login(request):
+    return render(request, 'login.html')
+
+
+def logear(request):
+    try:
+        nombre1 = request.POST['nombre']
+        password1 = request.POST['password']
+        user = authenticate(request, username=nombre1, password=password1)
+        if (user is not None):
+            login(request, user)
+            messages.success(request, 'Cuenta logeada')
+            return redirect('/')
+        else:
+            messages.error(request, 'Error, en iniciar sesion')
+            return redirect('/login')
+    except:
+        messages.error(request, 'Error, en iniciar sesion')
+        return redirect('/login')
+
+
+def registrar(request):
+    try:
+        nombre = request.POST['nombre']
+        password1 = request.POST['password1']
+        password2 = request.POST['password2']
+        if password1 == password2:
+            user = User.objects.create_user(
+                username=nombre, password=password1)
+            user.save()
+        print(user)
+        login(request, user)
+        messages.success(request, 'Cuenta creada')
+        return redirect('/')
+    except:
+        messages.error(
+            request, 'Error, en registrar cuenta o cuenta existente')
+        return redirect('/signup')
 
 
 def home(request):
