@@ -29,8 +29,9 @@ def logear(request):
         nombre1 = request.POST['nombre']
         password1 = request.POST['password']
         user1 = authenticate(username=nombre1, password=password1)
-        if(user1.is_staff is False):
-            messages.error(request, 'Error, usuario no autorizado, solicite permisos al administrador')
+        if (user1.is_staff is False):
+            messages.error(
+                request, 'Error, usuario no autorizado, solicite permisos al administrador')
             return redirect('/login')
         if (user1 is not None):
             login(request, user1)
@@ -65,38 +66,52 @@ def registrar(request):
             request, 'Error, en registrar cuenta o cuenta existente')
         return redirect('/signup')
 
+
 @login_required
 def home(request):
-    macs = Mac.objects.all()
-    return render(request, 'gestion.html',   {'macs': macs})
+    try:
+        macs = Mac.objects.all()
+        return render(request, 'gestion.html',   {'macs': macs})
+    except:
+        messages.error(request, 'Error de conexion con el servidor radius')
+        return redirect('/')
+
 
 @login_required
 def agregarMac(request):
     try:
         mac = request.POST['mac']
         nombre = request.POST['nombre']
-        radius.agregarMac(mac, nombre) 
-        Mac.objects.create(mac=mac, nombre=nombre, comentario= request.user.__str__())
+        buscar = Mac.objects.filter(mac=mac)
+        if (len(buscar) > 0):
+            messages.error(request, 'Error, el dispositivo ya existe')
+            return redirect('/')
+        Mac.objects.create(mac=mac, nombre=nombre,
+                           comentario=request.user.__str__())
+        radius.agregarMac(mac, nombre)
         messages.success(request, 'Dispositivo agregado')
     except:
         messages.error(request, 'Error, en listar dispositivos')
     return redirect('/')
 
+
 @login_required
 def borrarMac(request, id):
     try:
         mac = Mac.objects.get(id=id)
-        radius.borrarMac(mac.mac)
         mac.delete()
+        radius.borrarMac(mac.mac)
         messages.success(request, 'Dispositivo borrado')
     except:
         messages.error(request, 'Error, el dispositivo no fue borrado')
     return redirect('/')
 
+
 @login_required
 def editarMac(request, id):
     mac = Mac.objects.get(id=id)
     return render(request, 'editarMac.html', {'mac': mac})
+
 
 @login_required
 def edicionMac(request):
@@ -110,10 +125,22 @@ def edicionMac(request):
             mac=mac,
             nombre=nombre,
             comentario=comentario,
-            fechaModificacion=datetime.datetime.now() 
+            fechaModificacion=datetime.datetime.now()
         )
         messages.success(request, 'Dispositivo editado')
     except Exception as e:
         print(e)
         messages.error(request, 'Error, el dispositivo no fue editado')
     return redirect('/')
+
+
+@login_required
+def sincronizar(request):
+    try:
+        radius.sincronizar()
+        messages.success(request, 'Sincronizado')
+        return redirect('/')
+    except Exception as e:
+        print(e)
+        messages.error(request, 'Error, no se pudo sincronizar')
+        return redirect('/')

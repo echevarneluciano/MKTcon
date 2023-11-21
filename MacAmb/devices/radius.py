@@ -3,23 +3,19 @@
 import json
 import re
 from netmiko import ConnectHandler
-
 from MacAmb.models import Mac
 
 router_mikrotik = {
     'device_type': 'mikrotik_routeros',
-    'host':   '10.120.10.62',
-    'username': 'lenovo',
-    'password': 'Dgjl0864',
-    'port': 22          # optional, defaults to 22
-    # 'secret': 'secret',     # optional, defaults to ''
+    'host':   '10.11.20.238',
+    'port': 22,
+    'username': 'MACapp',
+    'use_keys': True,
+    'key_file': 'MacAmb/devices/keys/private.ppk',
 }
 
-""" 'use_keys': True,
-    'key_file': '/Users/mankomalsingh/.ssh/id_rsa', """
-
 patron_mac = re.compile(
-    r'"([0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2}:[0-9A-Fa-f]{2})\"')
+    r'\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b')
 patron_name = re.compile(r';;;(.*?)\n', re.DOTALL)
 
 
@@ -27,29 +23,34 @@ def modificarEliminar(comando):
     net_connect = ConnectHandler(**router_mikrotik)
     net_connect.send_config_set(comando, cmd_verify=False)
     net_connect.save_config()
+    net_connect.disconnect()
 
 
 def listar(comando):
     net_connect = ConnectHandler(**router_mikrotik)
     output = net_connect.send_command(comando, cmd_verify=False)
+    net_connect.disconnect()
     return output
 
 
-def listarMacs():
+def sincronizar():
 
-    comando = '/user-manager user print'
+    comando = '/user-manager user print without-paging'
     output = listar(comando)
 
     macs = patron_mac.findall(output)
     name = patron_name.findall(output)
+    macBd = Mac.objects.all()
     arrayMac = []
 
-    for i in range(len(macs)):
-        if (len(macs) != len(name)):
-            mac = Mac.objects.create(mac=macs[i])
-        else:
-            mac = Mac.objects.create(mac=macs[i], nombre=name[i])
-        arrayMac.append(mac)
+    if (len(macBd) != len(macs)):
+        for i in range(len(macs)):
+            if (len(macBd) == 0 or macBd[i]not in macs):
+                if (len(macs) != len(name)):
+                    mac = Mac.objects.create(mac=macs[i])
+                else:
+                    mac = Mac.objects.create(mac=macs[i], nombre=name[i])
+                arrayMac.append(mac)
 
     return arrayMac
 
