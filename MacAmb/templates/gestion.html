@@ -16,7 +16,7 @@
     <h2>Alta Dispositivos</h2>
     <div class="card">
       <div class="card-body">
-       <form action="agregarMac" method="POST">{% csrf_token %}
+        <form action="agregarMac" method="POST">{% csrf_token %}
         <div class="form-group">
             <label for="mac">MAC</label>
             <input placeholder="XX:XX:XX:XX:XX:XX" class="form-control" type="text" name="mac" id="mac" minlength="17" maxlength="17" pattern="[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}" required>
@@ -29,15 +29,21 @@
         <div class="form-group row px-4">
             <button class="btn btn-primary" type="submit">Agregar</button>
         </div>
-       </form>
+        </form>
       </div>
     </div>
+    <br>
+    <form action="exportarMac" method="POST">{% csrf_token %}
+      <div class="form-group row px-4">
+        <button class="btn btn-primary" type="submit">Exportar datos</button>
+      </div>
+    </form>
     </div>
     <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
-     <h2>Lista Dispositivos</h2>
-     <div class="table-responsive py-2">
-       <table class="table table-striped" id="dTable">
-         <thead>
+      <h2>Lista Dispositivos</h2>
+      <div class="table-responsive py-2">
+        <table class="table table-striped" id="dTable">
+          <thead>
             <tr>
               <th hidden> </th>
               <th>#</th>
@@ -49,8 +55,8 @@
               <th></th>
               <th></th>
             </tr>
-         </thead>
-         <tbody>
+          </thead>
+          <tbody>
             {% for mac in macs %}
             <tr>
               <td hidden>{{ mac.id }}</td>
@@ -64,9 +70,9 @@
               <td><a class="btn btn-danger btEliminar" href="borrarMac/{{ mac.id }}">Borrar</a></td>
             </tr>
             {% endfor %}
-         </tbody>
-       </table>
-     </div>
+          </tbody>
+        </table>
+      </div>
     </div>
 </div>
 {% endblock %}

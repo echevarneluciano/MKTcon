@@ -1,10 +1,12 @@
 import datetime
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Mac
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
+from .admin import MacResource
 from .devices import radius
 
 
@@ -143,4 +145,19 @@ def sincronizar(request):
     except Exception as e:
         print(e)
         messages.error(request, 'Error, no se pudo sincronizar')
+        return redirect('/')
+
+
+@login_required
+def exportarMac(request):
+    try:
+        resource = MacResource()
+        dataset = resource.export()
+        response = HttpResponse(
+            dataset.csv, content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="macs.csv"'
+        return response
+    except Exception as e:
+        print(e)
+        messages.error(request, 'Error, no se pudo exportar')
         return redirect('/')

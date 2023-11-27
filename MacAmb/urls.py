@@ -13,4 +13,5 @@ urlpatterns = [
     path('borrarMac/<int:id>', views.borrarMac, name='borrarMac'),
     path('editarMac/<int:id>', views.editarMac, name='editarMac'),
     path('editarMac/edicionMac', views.edicionMac, name='edicionMac'),
+    path('exportarMac', views.exportarMac, name='exportarMac'),
 ]
