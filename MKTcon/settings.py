@@ -29,7 +29,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
+AUTHENTICATION_BACKENDS = [
+    'MKTcon.authentication_backend.AuthenticationBackend',
+]
 # Application definition
 
 INSTALLED_APPS = [
