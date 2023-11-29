@@ -1,5 +1,6 @@
 # connect to our router via SSH using module Netmiko
 
+import datetime
 import json
 import re
 from netmiko import ConnectHandler
@@ -48,8 +49,12 @@ def sincronizar():
             if (len(macBd) == 0 or macBd[i]not in macs):
                 if (len(macs) != len(name)):
                     mac = Mac.objects.create(mac=macs[i])
+                    Mac.objects.filter(id=mac.id).update(
+                        comentario='luciano.echevarne', fechaCreacion=datetime.datetime.now())
                 else:
                     mac = Mac.objects.create(mac=macs[i], nombre=name[i])
+                    Mac.objects.filter(id=mac.id).update(
+                        comentario='luciano.echevarne', fechaCreacion=datetime.datetime.now())
                 arrayMac.append(mac)
 
     return arrayMac

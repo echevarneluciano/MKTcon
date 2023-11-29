@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-2jm-4gp4wdi-$uk1&zr2%y(qnxwx46$tp54r)*1ou!6&p%d1b%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 AUTHENTICATION_BACKENDS = [
     'MKTcon.authentication_backend.AuthenticationBackend',
@@ -80,10 +80,21 @@ WSGI_APPLICATION = 'MKTcon.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'macdb.sqlite3',
+    }
+} """
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'mktcon',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

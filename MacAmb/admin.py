@@ -13,4 +13,7 @@ class MacResource(resources.ModelResource):
             "id",
             "mac",
             "nombre",
+            "comentario",
+            "fechaCreacion",
+            "fechaModificacion",
         )
