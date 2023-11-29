@@ -3,7 +3,6 @@ from MacAmb import views
 
 urlpatterns = [
     path('', views.home, name='home'),
-    path('signup', views.signup, name='signup'),
     path('sincro', views.sincronizar, name='sincronizar'),
     path('login', views.loginPage, name='login'),
     path('logout', views.signout, name='logout'),

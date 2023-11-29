@@ -16,11 +16,17 @@ def get_LDAP_user(username, password):
             username.__str__() + '))',
         )
 
-        print(connection.response[0])
+        uid = connection.response[0]['dn']
+        autenticado = Connection(
+            server=server, user=uid, password=password, auto_bind=True
+        )
 
-        if len(connection.response) == 0:
+        print(autenticado)
+
+        if len(connection.response) == 0 or not autenticado.bind():
             return None
 
-        return connection.response[0]
-    except:
+        return autenticado
+    except Exception as e:
+        print(e)
         return None

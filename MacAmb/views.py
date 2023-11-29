@@ -28,7 +28,7 @@ def loginPage(request):
 
 def logear(request):
     try:
-        nombre1 = request.POST['nombre']
+        nombre1 = request.POST['nombre'].lower()
         password1 = request.POST['password']
         user1 = authenticate(username=nombre1, password=password1)
         if (user1.is_staff is False):
@@ -44,7 +44,8 @@ def logear(request):
             return redirect('/login')
     except Exception as e:
         print(e)
-        messages.error(request, 'Error al iniciar sesion')
+        messages.error(
+            request, 'Error, el usuario no se encuentra en el dominio')
         return redirect('/login')
 
 

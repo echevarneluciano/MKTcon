@@ -13,9 +13,10 @@ class AuthenticationBackend(ModelBackend):
 
         try:
             user = User.objects.get(username=username)
+            print(user)
         except User.DoesNotExist:
             user = User(username=username)
-            user.is_staff = True
+            user.is_staff = False
             user.save()
         return user
 
