@@ -10,8 +10,11 @@ class Mac(models.Model):
     mac = MACAddressField(null=True, blank=True)
     nombre = models.CharField(max_length=50)
     comentario = models.CharField(max_length=100)
-    fechaCreacion = models.DateField(auto_now_add=True)
-    fechaModificacion = models.DateField(auto_now=True)
+    fecha_creacion = models.DateField(auto_now_add=True)
+    fecha_modificacion = models.DateField(auto_now=True)
+
+    class Meta:
+        db_table = 'mac_abm_mac'
 
     def __str__(self):
         return self.mac.__str__() + ', ' + self.nombre+', ' + self.comentario

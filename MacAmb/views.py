@@ -22,10 +22,6 @@ def signout(request):
     return redirect('login')
 
 
-def loginPage(request):
-    return render(request, 'login.html')
-
-
 def logear(request):
     try:
         nombre1 = request.POST['nombre'].lower()
@@ -128,7 +124,7 @@ def edicionMac(request):
             mac=mac,
             nombre=nombre,
             comentario=comentario,
-            fechaModificacion=datetime.datetime.now()
+            fecha_modificacion=datetime.datetime.now()
         )
         messages.success(request, 'Dispositivo editado')
     except Exception as e:

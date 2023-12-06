@@ -4,7 +4,6 @@ from MacAmb import views
 urlpatterns = [
     path('', views.home, name='home'),
     path('sincro', views.sincronizar, name='sincronizar'),
-    path('login', views.loginPage, name='login'),
     path('logout', views.signout, name='logout'),
     path('login/logear', views.logear, name='logear'),
     path('signup/registrar', views.registrar, name='registrar'),
