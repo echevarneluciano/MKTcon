@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, logout , authenticate
 
 # Create your views here.
 
@@ -28,3 +28,9 @@ def loginPage(request):
             messages.error(
                 request, 'Error, el usuario no se encuentra en el dominio')
             return redirect('/login')
+
+
+def signout(request):
+    print('saliendo')
+    logout(request)
+    return redirect('/login')

@@ -1,8 +1,7 @@
 from django.contrib import auth
 from django.contrib.auth.middleware import MiddlewareMixin
 from django.http import HttpResponseForbidden
-
-from MacAmb import views
+from Homepage import views
 
 
 class AutomaticUserLoginMiddleware(MiddlewareMixin):

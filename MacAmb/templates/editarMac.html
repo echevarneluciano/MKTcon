@@ -8,7 +8,7 @@
     <h2>Editar Dispositivo</h2>
         <div class="card" >
         <div class="card-body">
-            <form action="edicionMac" method="POST">{% csrf_token %}
+            <form action="/macamb/editarMac/{{ mac.id }}" method="POST">{% csrf_token %}
                 <input type="hidden" name="id" value="{{ mac.id }}" readonly>
                 <input type="hidden" name="macVieja" value="{{ mac.mac }}" readonly>
                 <div class="form-group">
