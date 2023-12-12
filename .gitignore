@@ -1,4 +1,8 @@
 # Byte-compiled / optimized / DLL files
+DHCP/__pycache__/
+Homepage/__pycache__/
+MacAmb/__pycache__/
+MKTcon/__pycache__/
 __pycache__/
 *.py[cod]
 *$py.class
