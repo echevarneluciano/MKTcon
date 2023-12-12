@@ -3,8 +3,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Mac
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 from .admin import MacResource
 from .devices import radius

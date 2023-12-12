@@ -1,8 +1,9 @@
 from django.shortcuts import redirect, render
 from django.contrib import messages
-from django.contrib.auth import login, logout , authenticate
+from django.contrib.auth import login, logout, authenticate
 
 # Create your views here.
+
 
 def loginPage(request):
     if request.method == 'GET':
@@ -19,7 +20,7 @@ def loginPage(request):
             if (user1 is not None):
                 login(request, user1)
                 messages.success(request, 'Usuario logeado')
-                return redirect('macamb/')
+                return redirect('/macamb')
             else:
                 messages.error(request, 'Error, al iniciar sesion')
                 return redirect('/login')
