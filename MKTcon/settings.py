@@ -11,8 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from pathlib import Path
 from import_export.formats.base_formats import XLSX
-from pymysql import install_as_MySQLdb
-install_as_MySQLdb()
 
 EXPORT_FORMATS = [XLSX]
 
