@@ -17,7 +17,8 @@ def home(request):
         macs = Mac.objects.all()
         return render(request, 'gestion.html',   {'macs': macs})
     except:
-        messages.error(request, 'Error de conexion con el servidor radius')
+        messages.error(
+            request, 'Error de conexion con el servidor radius', extra_tags='alert-danger')
         return redirect('/macamb')
 
 
@@ -28,14 +29,17 @@ def agregarMac(request):
         nombre = request.POST['nombre']
         buscar = Mac.objects.filter(mac=mac)
         if (len(buscar) > 0):
-            messages.error(request, 'Error, el dispositivo ya existe')
+            messages.error(
+                request, 'Error, el dispositivo ya existe', extra_tags='alert-warning')
             return redirect('/macamb')
-        Mac.objects.create(mac=mac, nombre=nombre,
-                           comentario=request.user.__str__())
         radius.agregarMac(mac, nombre)
-        messages.success(request, 'Dispositivo agregado')
+        Mac.objects.create(mac=mac, nombre=nombre,
+                           comentario=request.user.__str__(), fecha_creacion=datetime.datetime.now(), fecha_modificacion=datetime.datetime.now())
+        messages.success(request, 'Dispositivo agregado',
+                         extra_tags='alert-success')
     except:
-        messages.error(request, 'Error, en listar dispositivos')
+        messages.error(request, 'Error, al agregar dispositivo',
+                       extra_tags='alert-danger')
     return redirect('/macamb')
 
 
@@ -43,11 +47,13 @@ def agregarMac(request):
 def borrarMac(request, id):
     try:
         mac = Mac.objects.get(id=id)
-        mac.delete()
         radius.borrarMac(mac.mac)
-        messages.success(request, 'Dispositivo borrado')
+        mac.delete()
+        messages.success(request, 'Dispositivo borrado',
+                         extra_tags='alert-success')
     except:
-        messages.error(request, 'Error, el dispositivo no fue borrado')
+        messages.error(
+            request, 'Error, el dispositivo no fue borrado', extra_tags='alert-danger')
     return redirect('/macamb')
 
 
@@ -69,10 +75,12 @@ def editarMac(request, id):
                 comentario=comentario,
                 fecha_modificacion=datetime.datetime.now()
             )
-            messages.success(request, 'Dispositivo editado')
+            messages.success(request, 'Dispositivo editado',
+                             extra_tags='alert-success')
         except Exception as e:
             print(e)
-            messages.error(request, 'Error, el dispositivo no fue editado')
+            messages.error(
+                request, 'Error, el dispositivo no fue editado', extra_tags='alert-danger')
         return redirect('/macamb')
 
 
@@ -80,11 +88,12 @@ def editarMac(request, id):
 def sincronizar(request):
     try:
         radius.sincronizar()
-        messages.success(request, 'Sincronizado')
+        messages.success(request, 'Sincronizado', extra_tags='alert-success')
         return redirect('/')
     except Exception as e:
         print(e)
-        messages.error(request, 'Error, no se pudo sincronizar')
+        messages.error(request, 'Error, no se pudo sincronizar',
+                       extra_tags='alert-danger')
         return redirect('/')
 
 
@@ -99,5 +108,6 @@ def exportarMac(request):
         return response
     except Exception as e:
         print(e)
-        messages.error(request, 'Error, no se pudo exportar')
+        messages.error(request, 'Error, no se pudo exportar',
+                       extra_tags='alert-danger')
         return redirect('/')

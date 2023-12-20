@@ -15,23 +15,25 @@ def loginPage(request):
             user1 = authenticate(username=nombre1, password=password1)
             if (user1.is_staff is False):
                 messages.error(
-                    request, 'Error, usuario no autorizado, solicite permisos al administrador')
+                    request, 'Error, usuario no autorizado, solicite permisos al administrador', extra_tags='alert-warning')
                 return redirect('/login')
             if (user1 is not None):
                 login(request, user1)
-                messages.success(request, 'Usuario logeado')
+                messages.success(request, 'Usuario logeado',
+                                 extra_tags='alert-success')
                 return redirect('/macamb')
             else:
-                messages.error(request, 'Error, al iniciar sesion')
+                messages.error(request, 'Error, al iniciar sesion',
+                               extra_tags='alert-danger')
                 return redirect('/login')
         except Exception as e:
             print(e)
             messages.error(
-                request, 'Error, el usuario no se encuentra en el dominio')
+                request, 'Error, el usuario no se encuentra en el dominio', extra_tags='alert-danger')
             return redirect('/login')
 
 
 def signout(request):
-    print('saliendo')
     logout(request)
+    messages.success(request, 'Sesion cerrada', extra_tags='alert-success')
     return redirect('/login')
