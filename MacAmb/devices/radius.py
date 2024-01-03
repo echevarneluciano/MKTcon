@@ -33,6 +33,12 @@ def listar(comando):
     return output
 
 
+def status():
+    comando = 'ping 10.11.20.238 count=1'
+    output = listar(comando)
+    return output
+
+
 def sincronizar():
 
     comando = '/user-manager user print without-paging'

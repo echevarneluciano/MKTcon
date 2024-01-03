@@ -14,8 +14,9 @@ from .devices import radius
 @login_required
 def home(request):
     try:
+        status = radius.status().find('timeout')
         macs = Mac.objects.all()
-        return render(request, 'gestion.html',   {'macs': macs})
+        return render(request, 'gestion.html',   {'macs': macs, 'status': status})
     except:
         messages.error(
             request, 'Error de conexion con el servidor radius', extra_tags='alert-danger')

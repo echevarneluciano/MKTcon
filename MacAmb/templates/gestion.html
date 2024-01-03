@@ -2,6 +2,8 @@
 
 {% block title %} Gestion de Dispositivos {% endblock %}
 
+{% load static %}
+
 {% block body %}
 <div class="row">
   {% if messages %}
@@ -13,7 +15,25 @@
       {% endfor %}
       {% endif %}
     <div class="col-md-6 col-sm-12 col-xl-3 col-lg-3">
-    <h2>Alta Dispositivos</h2>
+    <h4>Status</h4>
+    <div class="card">
+      <div class="card-body">
+        {% if status == -1 %}
+        <p class="card-text">Radius POS : <strong>Activo</strong>
+        <img src="{% static 'img/green.png' %}" height="20px" style="border-radius:50%;" title="Active"></p>
+        {% else %}
+        <p class="card-text">Radius POS : <strong>Inactivo</strong>
+        <img src="{% static 'img/red.jpg' %}" height="20px" style="border-radius:50%;" title="Active"></p>
+        {% endif %}
+        <p class="card-text">Radius Valle : <strong>Inactivo</strong> 
+        <img src="{% static 'img/red.jpg' %}" height="20px" style="border-radius:50%;" title="Active"></p>
+        <p class="card-text">Radius Norte : <strong>Inactivo</strong> 
+        <img src="{% static 'img/red.jpg' %}" height="20px" style="border-radius:50%;" title="Active"></p>
+        <p class="card-text">Radius Sur : <strong>Inactivo</strong> 
+        <img src="{% static 'img/red.jpg' %}" height="20px" style="border-radius:50%;" title="Active"></p>
+      </div>
+    </div>
+        <h4>Alta Dispositivos</h4>
     <div class="card">
       <div class="card-body">
         <form action="agregarMac" method="POST">{% csrf_token %}
@@ -40,7 +60,7 @@
     </form>
     </div>
     <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
-      <h2>Lista Dispositivos</h2>
+      <h4>Lista Dispositivos</h4>
       <div class="table-responsive py-2">
         <table class="table table-striped" id="dTable">
           <thead>
