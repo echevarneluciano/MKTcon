@@ -43,7 +43,6 @@ def sincronizar():
 
     comando = '/user-manager user print without-paging'
     output = listar(comando)
-
     macs = patron_mac.findall(output)
     name = patron_name.findall(output)
     macBd = Mac.objects.all()
@@ -53,13 +52,11 @@ def sincronizar():
         for i in range(len(macs)):
             if (len(macBd) == 0 or macBd[i]not in macs):
                 if (len(macs) != len(name)):
-                    mac = Mac.objects.create(mac=macs[i])
-                    Mac.objects.filter(id=mac.id).update(
-                        comentario='luciano.echevarne', fecha_creacion=datetime.datetime.now())
+                    mac = Mac.objects.create(mac=macs[i], fecha_creacion=datetime.datetime.now(
+                    ), fecha_modificacion=datetime.datetime.now(), comentario='luciano.echevarne')
                 else:
-                    mac = Mac.objects.create(mac=macs[i], nombre=name[i])
-                    Mac.objects.filter(id=mac.id).update(
-                        comentario='luciano.echevarne', fecha_creacion=datetime.datetime.now())
+                    mac = Mac.objects.create(mac=macs[i], nombre=name[i], comentario='luciano.echevarne',
+                                             fecha_creacion=datetime.datetime.now(), fecha_modificacion=datetime.datetime.now())
                 arrayMac.append(mac)
 
     return arrayMac
