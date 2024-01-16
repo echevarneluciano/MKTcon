@@ -1,0 +1,182 @@
+{% extends 'templateTareas.html' %}
+
+{% block title %} Tareas {% endblock %}
+
+{% load static %}
+
+{% block body %}
+<div class="row d-flex justify-content-center vh-100">
+  {% if messages %}
+      {% for message in messages %}
+      <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style=" text-align:center;">
+        <strong>{{ message }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      {% endfor %}
+      {% endif %}
+    <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
+      <h5>Registrar Tarea</h5>
+      <div class="card">
+        <div class="card-body">
+        <form class="row g-3"  method="POST">{% csrf_token %}
+          <div class="form-group col-12">
+            <label for="nombre">Titulo</label>
+            <input class="form-control" placeholder="Titulo de la Tarea"  type="text" name="nombre" id="nombre" maxlength="50"  required>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="etiqueta">Etiqueta</label>
+            <select class="form-select" name="etiqueta" id="etiqueta">
+              {% for etiqueta in etiquetas %}
+              <option value="{{etiqueta}}">{{etiqueta}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <label for="prioridad">Prioridad</label>
+            <select class="form-select" name="prioridad" id="prioridad">
+              {% for prioridad in prioridades %}
+              <option value="{{prioridad}}">{{prioridad}}</option>
+              {% endfor %}
+            </select>
+          </div>
+        <div class="form-group col-md-4">
+          <label for="categoria">Categoria</label>
+          <select class="form-select" name="categoria" id="categoria">
+            {% for categoria in categorias %}
+            <option value="{{categoria}}">{{categoria}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="sitio">Sitio</label>
+          <select class="form-select" name="sitio" id="sitio">
+            {% for sitio in sitios %}
+            <option value="{{sitio}}">{{sitio}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="departamento">Departamento</label>
+          <select class="form-select" name="departamento" id="departamento">
+            {% for departamento in departamentos %}
+            <option value="{{departamento}}">{{departamento}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-md-12">
+          <label for="descripcion">Descripcion</label>
+          <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
+        </div>
+          <div class="form-group col-md-12">
+            <button class="btn btn-primary" type="submit">Agregar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <br>
+      <h3 class="text-center" >Lista Tareas</h3>
+      <div>
+        <b>Columnas visibles:</b> <a class="toggle-vis" data-column="2">Titulo</a> - <a class="toggle-vis" data-column="3">Etiqueta</a> - 
+        <a class="toggle-vis" data-column="4">Descripcion</a> - <a class="toggle-vis" data-column="5">Responsable</a> - 
+        <a class="toggle-vis" data-column="6">Estado</a> - <a class="toggle-vis" data-column="7">Prioridad</a> - 
+        <a class="toggle-vis" data-column="8">Categoria</a> - <a class="toggle-vis" data-column="9">Sitio</a> - 
+        <a class="toggle-vis" data-column="10">Departamento</a> - <a class="toggle-vis" data-column="11">Fecha Creacion</a> - 
+        <a class="toggle-vis" data-column="12">Fecha Modificacion</a> - <a class="toggle-vis" data-column="13">Fecha Cierre</a> 
+      <b>Limpiar:</b> <a class="toggle-vis" data-column="0">Todas</a> - <a class="toggle-vis" data-column="1">Ninguna</a>
+      </div>
+      <div class="table-responsive py-2">
+        <table class="table table-striped" id="dTable">
+          <thead>
+            <tr>
+              <th hidden> </th>
+              <th>#</th>
+              <th>Titulo</th>
+              <th>Etiqueta</th>
+              <th>Descripcion</th>
+              <th>Responsable</th>
+              <th>Estado</th>
+              <th>Prioridad</th>
+              <th>Categoria</th>
+              <th>Sitio</th>
+              <th>Departamento</th>
+              <th>Fecha Creacion</th>
+              <th>Fecha Modificacion</th>
+              <th>Fecha Cierre</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for tarea in tareas %}
+            <tr>
+              <td hidden>{{tarea.id}}</td>
+              <td>{{ forloop.counter }}</td>
+              <td>{{tarea.nombre}}</td>
+              <td>{{tarea.etiqueta}}</td>
+              <td>{{tarea.descripcion}}</td>
+              <td>{{tarea.responsable}}</td>
+
+              {% for estado in estados %}
+              {% if tarea.estado in estado %}
+              <td>{{estado}}</td>
+              {% endif %}
+              {% endfor %}
+              
+              {% for prioridad in prioridades %}
+              {% if tarea.prioridad in prioridad %}
+              <td>{{prioridad}}</td>
+              {% endif %}
+              {% endfor %}
+
+              {% for categoria in categorias %}
+              {% if tarea.categoria in categoria %}
+              <td>{{categoria}}</td>
+              {% endif %}
+              {% endfor %}
+              
+              {% for sitio in sitios %}
+              {% if tarea.sitio in sitio %}
+              <td>{{sitio}}</td>
+              {% endif %}
+              {% endfor %}
+
+              {% for departamento in departamentos %}
+              {% if tarea.departamento in departamento %}
+              <td>{{departamento}}</td>
+              {% endif %}
+              {% endfor %}
+              
+              <td>{{tarea.fecha_creacion}}</td>
+              <td>{{tarea.fecha_modificacion}}</td>
+              <td>{{tarea.fecha_cierre}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr>
+              <th hidden> </th>
+              <th>#</th>
+              <th>Titulo</th>
+              <th>Etiqueta</th>
+              <th>Descripcion</th>
+              <th>Responsable</th>
+              <th>Estado</th>
+              <th>Prioridad</th>
+              <th>Categoria</th>
+              <th>Sitio</th>
+              <th>Departamento</th>
+              <th>Fecha Creacion</th>
+              <th>Fecha Modificacion</th>
+              <th>Fecha Cierre</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <br>
+      <form action="exportarTareas" method="POST">{% csrf_token %}
+        <div class="form-group">
+          <button class="btn btn-primary" type="submit">Exportar datos</button>
+        </div>
+        <br>
+      </form>
+    </div>
+</div>
+{% endblock %}

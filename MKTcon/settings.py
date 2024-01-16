@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'MacAmb',
     'DHCP',
     'Homepage',
+    'Tareas',
 ]
 
 MIDDLEWARE = [

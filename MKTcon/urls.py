@@ -21,5 +21,6 @@ urlpatterns = [
     path('', include('Homepage.urls')),
     path('macamb/', include('MacAmb.urls')),
     path('dhcp/', include('DHCP.urls')),
+    path('tareas/', include('Tareas.urls')),
     path('admin', admin.site.urls),
 ]

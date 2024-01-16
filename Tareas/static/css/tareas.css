@@ -1,0 +1,16 @@
+th, td {
+    text-align: center;
+    vertical-align: middle;
+    max-width: 15ch;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+td:hover{
+    overflow: visible;
+    text-overflow: inherit;
+    white-space: normal;
+    max-width: inherit;   
+    white-space: pre-wrap;
+    cursor: pointer;
+}
