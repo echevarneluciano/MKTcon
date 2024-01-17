@@ -36,15 +36,16 @@ class Tarea(models.Model):
     nombre = models.CharField(max_length=50)
     etiqueta = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=400)
+    temp_acumulado = models.IntegerField(null=True, default=0)
     responsable = models.CharField(max_length=100)
     estado = models.IntegerField(choices=ESTADOS, default=2)
     prioridad = models.IntegerField(choices=PRIORIDADES, default=1)
     categoria = models.IntegerField(choices=CATEGORIAS, default=1)
     departamento = models.IntegerField(choices=DEPARTAMENTOS, default=1)
     sitio = models.IntegerField(choices=SITIOS, default=1)
-    fecha_creacion = models.DateField()
-    fecha_modificacion = models.DateField(null=True, blank=True)
-    fecha_finalizacion = models.DateField(null=True, blank=True)
+    fecha_creacion = models.DateTimeField()
+    fecha_modificacion = models.DateTimeField(null=True, blank=True)
+    fecha_finalizacion = models.DateTimeField(null=True, blank=True)
 
     class Meta:
         db_table = 'tareas_tarea'

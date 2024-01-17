@@ -14,3 +14,8 @@ td:hover{
     white-space: pre-wrap;
     cursor: pointer;
 }
+th select{
+    width: 100%;
+}
+
+
