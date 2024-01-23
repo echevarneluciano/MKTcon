@@ -74,7 +74,7 @@
                 </div>
                 <div class="form-group col-md-12">
                   <label for="descripcion">Descripcion</label>
-                  <textarea class="form-control" name="descripcion" id="descripcion" rows="3"></textarea>
+                  <textarea class="form-control" name="descripcion" id="descripcion" rows="3" required></textarea>
                 </div>
                   <div class="form-group col-md-12">
                     <button class="btn btn-primary" type="submit">Agregar</button>
@@ -85,6 +85,7 @@
             </div>
           </div>
         </div>
+      </div>
       <br>
       <h4 class="text-center" >Lista Tareas</h4>
 
@@ -157,6 +158,62 @@
             </div>
           </div>
         </div>
+      </div>
+
+    
+<div class="modal fade" id="playModal" tabindex="-1" aria-labelledby="playModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="playModal">Empezar tarea</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Desea iniciar la tarea: <b id="tareaConfirmar"></b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmar">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="pauseModal" tabindex="-1" aria-labelledby="pauseModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="pauseModal">Pausar tarea</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Desea pausar la tarea: <b id="tareaPausar"></b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmarPausa">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="stopModal" tabindex="-1" aria-labelledby="stopModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stopModal">Finalizar tarea</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ¿Desea dar por finalizada la tarea: <b id="tareaStop"></b>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmarStop">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
       <div class="table-responsive py-2">
         <table class="table table-striped" id="dTable">
@@ -170,7 +227,7 @@
               <th>Descripcion/Tarea</th>
               <th>Responsable</th>
               <th>Estado</th>
-              <th>Tiempo/Minutos</th>
+              <th>Acumulado h:m:s</th>
               <th>Prioridad</th>
               <th>Categoria</th>
               <th>Sitio</th>
@@ -186,7 +243,13 @@
               <td hidden>{{tarea.id}}</td>
               <td>{{ forloop.counter }}</td>
               <td>
-                <a class="a-play" id="{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a>|<a class="a-pause" id="{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a>|<a class="a-stop" id="{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
+                {% if tarea.estado == 1 %}
+                <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
+                {% elif tarea.estado == 2 %}
+                <a class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
+                {% else %}
+                <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
+                {% endif %}
               </td>
               <td>{{tarea.nombre}}</td>
               <td>{{tarea.etiqueta}}</td>
@@ -195,11 +258,11 @@
 
               {% for estado in estados %}
               {% if tarea.estado in estado %}
-              <td>{{estado}}</td>
+              <td id="estado-{{tarea.id}}">{{estado}}</td>
               {% endif %}
               {% endfor %}
 
-              <td>{{tarea.temp_acumulado}}</td>
+              <td id="acumulado-{{tarea.id}}">{{tarea.temp_acumulado|date:"H:i:s"}}</td>
               
               {% for prioridad in prioridades %}
               {% if tarea.prioridad in prioridad %}
@@ -226,8 +289,8 @@
               {% endfor %}
 
               <td>{{tarea.fecha_creacion}}</td>
-              <td>{{tarea.fecha_modificacion}}</td>
-              <td>{{tarea.fecha_cierre}}</td>
+              <td id="fechaMod-{{tarea.id}}">{{tarea.fecha_modificacion}}</td>
+              <td id="fechaCierre-{{tarea.id}}">{{tarea.fecha_finalizacion|default:"-"}}</td>
             </tr>
             {% endfor %}
           </tbody>

@@ -10,8 +10,7 @@ td:hover{
     overflow: visible;
     text-overflow: inherit;
     white-space: normal;
-    max-width: inherit;   
-    white-space: pre-wrap;
+    max-width: inherit;
     cursor: pointer;
 }
 th select{

@@ -36,7 +36,7 @@ class Tarea(models.Model):
     nombre = models.CharField(max_length=50)
     etiqueta = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=400)
-    temp_acumulado = models.IntegerField(null=True, default=0)
+    temp_acumulado = models.TimeField(default='00:00:00')
     responsable = models.CharField(max_length=100)
     estado = models.IntegerField(choices=ESTADOS, default=2)
     prioridad = models.IntegerField(choices=PRIORIDADES, default=1)
