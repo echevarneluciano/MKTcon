@@ -14,6 +14,9 @@
 $("#etiqueta").select2({
   tags: true,
 });
+$("#etiqueta2").select2({
+  tags: true,
+});
 $("#prioridad").select2({});
 
 $(document).ready(function () {
@@ -87,7 +90,7 @@ $(document).ready(function () {
     });
     valoresSeleccionados.forEach((el) => {
       let column2 = table.column(el);
-      column2.visible(!column2.visible());
+      column2.visible(true);
     });
     valoresSeleccionados.clear();
   });

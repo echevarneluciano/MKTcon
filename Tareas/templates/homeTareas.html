@@ -125,7 +125,7 @@
               </div>
               <div class="form-check form-check-inline form-switch col-2">
                 <input class="form-check-input" value="8" type="checkbox" id="temp_acumulado" checked>
-                <label class="form-check-label" for="temp_acumulado">Tiempo/Minutos</label>
+                <label class="form-check-label" for="temp_acumulado">Acumulado</label>
               </div>
               <div class="form-check form-check-inline form-switch col-2">
                 <input class="form-check-input" value="9" type="checkbox" id="prioridad" checked>
@@ -251,7 +251,7 @@
                 <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
                 {% endif %}
               </td>
-              <td>{{tarea.nombre}}</td>
+              <td><a href="editar/tarea/{{tarea.id}}" id="a-tarea-{{tarea.id}}"><b>{{tarea.nombre}}</b></a></td>
               <td>{{tarea.etiqueta}}</td>
               <td>{{tarea.descripcion}}</td>
               <td>{{tarea.responsable}}</td>

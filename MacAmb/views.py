@@ -5,6 +5,7 @@ from .models import Mac
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .admin import MacResource
+from django.http import JsonResponse
 from .devices import radius
 
 
@@ -53,6 +54,7 @@ def borrarMac(request, id):
         mac.delete()
         messages.success(request, 'Dispositivo borrado',
                          extra_tags='alert-success')
+        return JsonResponse({'success': True})
     except:
         messages.error(
             request, 'Error, el dispositivo no fue borrado', extra_tags='alert-danger')

@@ -1,0 +1,131 @@
+{% extends 'templateEditTareas.html' %}
+
+{% block title %} Editar tarea {% endblock %}
+
+{% block body %}
+<d class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="eliminarModal">Eliminar tarea</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            ¿Desea eliminar la tarea: <b> {{tarea.nombre}} </b>?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnConfirmarEliminar">Confirmar</button>
+        </div>
+        </div>
+    </div>
+</div>
+<div class="row d-flex justify-content-center vh-100">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert" style=" text-align:center;">
+            <strong>{{ message }}</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+        {% endif %}
+        <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
+        <h5>Editar Tarea</h5>
+        <div class="card">
+            <div class="card-body">
+            <form class="row g-3"  method="POST">{% csrf_token %}
+                <input type="hidden" name="id" value="{{tarea.id}}">
+                <div class="form-group col-12">
+                <label for="nombre">Titulo</label>
+                <input class="form-control" value="{{tarea.nombre}}" placeholder="Titulo de la Tarea"  type="text" name="nombre" id="nombre" maxlength="50"  required>
+                </div>
+                <div class="form-group col-md-6">
+                <label for="etiqueta">Etiqueta</label>
+                <select class="form-select" name="etiqueta" id="etiqueta2">
+                    {% for etiqueta in etiquetas %}
+                    {% if tarea.etiqueta in etiqueta %}
+                    <option selected value="{{etiqueta}}">{{etiqueta}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% for etiqueta in etiquetas %}
+                    <option value="{{etiqueta}}">{{etiqueta}}</option>
+                    {% endfor %}
+                </select>
+                </div>
+                <div class="form-group col-md-6">
+                <label for="prioridad">Prioridad</label>
+                <select class="form-select" name="prioridad" id="prioridad">
+                    {% for prioridad in prioridades %}
+                    {% if tarea.prioridad in prioridad %}
+                    <option selected value="{{prioridad}}">{{prioridad}}</option>
+                    {% endif %}
+                    {% endfor %}
+                    {% for prioridad in prioridades %}
+                    <option value="{{prioridad}}">{{prioridad}}</option>
+                    {% endfor %}
+                </select>
+                </div>
+            <div class="form-group col-md-4">
+                <label for="categoria">Categoria</label>
+                <select class="form-select" name="categoria" id="categoria">
+                    {% for categoria in categorias %}
+                    {% if tarea.categoria in categoria %}
+                    <option selected value="{{categoria}}">{{categoria}}</option>
+                    {% endif %}
+                    {% endfor %}
+
+                {% for categoria in categorias %}
+                <option value="{{categoria}}">{{categoria}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="sitio">Sitio</label>
+                <select class="form-select" name="sitio" id="sitio">
+                    {% for sitio in sitios %}
+                    {% if tarea.sitio in sitio %}
+                    <option selected value="{{sitio}}">{{sitio}}</option>
+                    {% endif %}
+                    {% endfor %}
+
+                {% for sitio in sitios %}
+                <option value="{{sitio}}">{{sitio}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="departamento">Departamento</label>
+                <select class="form-select" name="departamento" id="departamento">
+                    {% for departamento in departamentos %}
+                    {% if tarea.departamento in departamento %}
+                    <option selected value="{{departamento}}">{{departamento}}</option>
+                    {% endif %}
+                    {% endfor %}
+                
+                {% for departamento in departamentos %}
+                <option value="{{departamento}}">{{departamento}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="form-group col-md-12">
+                <label for="descripcion">Descripcion</label>
+                <textarea  class="form-control" name="descripcion" id="descripcion" rows="3" required>{{tarea.descripcion}}</textarea>
+            </div>
+                <div class="form-group col-md-10">
+                <button class="btn btn-primary" type="submit">Editar</button>
+                </div>
+                <div class="form-group col-md-2 d-flex justify-content-end">
+                <button class="btn btn-danger" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal" type="button">Eliminar</button>
+                </div>
+                <div class="form-group col-md-12">
+                    <a href="/tareas"  class=" btn btn-secondary " > Volver </a>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+
