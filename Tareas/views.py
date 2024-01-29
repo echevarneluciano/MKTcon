@@ -23,11 +23,10 @@ def homeTareas(request):
         creada = Tarea.objects.create(
             nombre=request.POST['nombre'],
             etiqueta=request.POST['etiqueta'],
-            prioridad=request.POST['prioridad'].split("(")[1].split(",")[0],
-            categoria=request.POST['categoria'].split("(")[1].split(",")[0],
-            sitio=request.POST['sitio'].split("(")[1].split(",")[0],
-            departamento=request.POST['departamento'].split(
-                "(")[1].split(",")[0],
+            prioridad=request.POST['prioridad'],
+            categoria=request.POST['categoria'],
+            sitio=request.POST['sitio'],
+            departamento=request.POST['departamento'],
             descripcion=request.POST['descripcion'],
             fecha_creacion=datetime.now(),
             fecha_modificacion=datetime.now(),
@@ -123,11 +122,10 @@ def editarTarea(request, id):
         tarea = Tarea.objects.get(id=id)
         tarea.nombre = request.POST['nombre']
         tarea.etiqueta = request.POST['etiqueta']
-        tarea.prioridad = request.POST['prioridad'].split("(")[1].split(",")[0]
-        tarea.categoria = request.POST['categoria'].split("(")[1].split(",")[0]
-        tarea.sitio = request.POST['sitio'].split("(")[1].split(",")[0]
-        tarea.departamento = request.POST['departamento'].split(
-            "(")[1].split(",")[0]
+        tarea.prioridad = request.POST['prioridad']
+        tarea.categoria = request.POST['categoria']
+        tarea.sitio = request.POST['sitio']
+        tarea.departamento = request.POST['departamento']
         tarea.descripcion = request.POST['descripcion']
         tarea.save()
         messages.success(request, 'Tarea actualizada',

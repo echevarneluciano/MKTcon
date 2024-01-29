@@ -13,10 +13,9 @@
 
 $("#etiqueta").select2({
   tags: true,
+  width: "resolve",
 });
-$("#etiqueta2").select2({
-  tags: true,
-});
+
 $("#prioridad").select2({});
 
 $(document).ready(function () {
@@ -109,7 +108,7 @@ $(document).ready(function () {
             var id = data[0].id;
             var estadoCambiar = document.getElementById("estado-" + id);
             var fechaMod = document.getElementById("fechaMod-" + id);
-            estadoCambiar.innerHTML = "(1, 'En proceso')";
+            estadoCambiar.innerHTML = "En proceso";
             var fechaSinFormato = data[0].fecha_modificacion;
             var fechaFormateada =
               moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
@@ -148,7 +147,7 @@ $(document).ready(function () {
             var fechaFormateada =
               moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
             fechaMod.innerHTML = fechaFormateada;
-            estadoCambiar.innerHTML = "(2, 'Pausada')";
+            estadoCambiar.innerHTML = "Pausada";
             acumuladoCambiar.innerHTML = data[0].temp_acumulado;
             var desactivarPlay = document.getElementById("a-play-" + id);
             var desactivarPause = document.getElementById("a-pause-" + id);
@@ -185,7 +184,7 @@ $(document).ready(function () {
               "DD MMMM YYYY HH:mm"
             );
             fechaFin.innerHTML = fechaCierreFormateada;
-            estadoCambiar.innerHTML = "(3, 'Finalizada')";
+            estadoCambiar.innerHTML = "Finalizada";
             acumuladoCambiar.innerHTML = data[0].temp_acumulado;
             var desactivarPlay = document.getElementById("a-play-" + id);
             var desactivarPause = document.getElementById("a-pause-" + id);

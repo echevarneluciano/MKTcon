@@ -14,7 +14,7 @@
       </div>
       {% endfor %}
       {% endif %}
-    <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
+    
       <h5>Registrar Tarea</h5>
       <div class="accordion" id="accordionExample1">
         <div class="accordion-item">
@@ -23,8 +23,10 @@
               <b>Nueva tarea</b>
             </button>
           </h2>
-          <div id="collapseOne1" class="accordion-collapse collapse show" aria-labelledby="headingOne1" data-bs-parent="#accordionExample1">
+          <div id="collapseOne1" class="accordion-collapse collapse" aria-labelledby="headingOne1" data-bs-parent="#accordionExample1">
             <div class="accordion-body">
+              <div class="row d-flex justify-content-center">
+              <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
               <div class="card">
                 <div class="card-body">
                 <form class="row g-3"  method="POST">{% csrf_token %}
@@ -34,7 +36,7 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label for="etiqueta">Etiqueta</label>
-                    <select class="form-select" name="etiqueta" id="etiqueta">
+                    <select class="js-example-responsive" style="width: 75%" name="etiqueta" id="etiqueta">
                       {% for etiqueta in etiquetas %}
                       <option value="{{etiqueta}}">{{etiqueta}}</option>
                       {% endfor %}
@@ -42,9 +44,9 @@
                   </div>
                   <div class="form-group col-md-6">
                     <label for="prioridad">Prioridad</label>
-                    <select class="form-select" name="prioridad" id="prioridad">
+                    <select class="js-example-responsive" style="width: 75%" name="prioridad" id="prioridad">
                       {% for prioridad in prioridades %}
-                      <option value="{{prioridad}}">{{prioridad}}</option>
+                      <option value="{{prioridad.0}}">{{prioridad.1}}</option>
                       {% endfor %}
                     </select>
                   </div>
@@ -52,7 +54,7 @@
                   <label for="categoria">Categoria</label>
                   <select class="form-select" name="categoria" id="categoria">
                     {% for categoria in categorias %}
-                    <option value="{{categoria}}">{{categoria}}</option>
+                    <option value="{{categoria.0}}">{{categoria.1}}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -60,7 +62,7 @@
                   <label for="sitio">Sitio</label>
                   <select class="form-select" name="sitio" id="sitio">
                     {% for sitio in sitios %}
-                    <option value="{{sitio}}">{{sitio}}</option>
+                    <option value="{{sitio.0}}">{{sitio.1}}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -68,7 +70,7 @@
                   <label for="departamento">Departamento</label>
                   <select class="form-select" name="departamento" id="departamento">
                     {% for departamento in departamentos %}
-                    <option value="{{departamento}}">{{departamento}}</option>
+                    <option value="{{departamento.0}}">{{departamento.1}}</option>
                     {% endfor %}
                   </select>
                 </div>
@@ -81,6 +83,8 @@
                   </div>
                 </form>
               </div>
+              </div>
+              </div>
             </div>
             </div>
           </div>
@@ -89,78 +93,6 @@
       <br>
       <h4 class="text-center" >Lista Tareas</h4>
 
-      <div class="accordion" id="accordionExample">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="headingOne">
-            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-              <b>Columnas visibles</b>
-            </button>
-          </h2>
-          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-            <div class="accordion-body">
-              <div class="form-check form-check-inline form-switch col-12">
-                <input class="form-check-input" value="0"  type="checkbox" id="todas" checked>
-                <label class="form-check-label" for="todas"><b>Todas</b></label>
-              </div>
-              <br>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="3"  type="checkbox" id="titulo" checked>
-                <label class="form-check-label" for="titulo">Titulo</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="4" type="checkbox" id="etiqueta" checked>
-                <label class="form-check-label" for="etiqueta">Etiqueta</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="5" type="checkbox" id="descripcion" checked>
-                <label class="form-check-label" for="descripcion">Descripcion</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="6" type="checkbox" id="responsable" checked>
-                <label class="form-check-label" for="responsable">Responsable</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="7" type="checkbox" id="estado" checked>
-                <label class="form-check-label" for="estado">Estado</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="8" type="checkbox" id="temp_acumulado" checked>
-                <label class="form-check-label" for="temp_acumulado">Acumulado</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="9" type="checkbox" id="prioridad" checked>
-                <label class="form-check-label" for="prioridad">Prioridad</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="10" type="checkbox" id="categoria" checked>
-                <label class="form-check-label" for="categoria">Categoria</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="11" type="checkbox" id="sitio" checked>
-                <label class="form-check-label" for="sitio">Sitio</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="12" type="checkbox" id="departamento" checked>
-                <label class="form-check-label" for="departamento">Departamento</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="13" type="checkbox" id="fechaCreacion" checked>
-                <label class="form-check-label" for="fechaCreacion">Fecha Creacion</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="14" type="checkbox" id="fechaModificacion" checked>
-                <label class="form-check-label" for="fechaModificacion">Fecha Mod.</label>
-              </div>
-              <div class="form-check form-check-inline form-switch col-2">
-                <input class="form-check-input" value="15" type="checkbox" id="fechaCierre" checked>
-                <label class="form-check-label" for="fechaCierre">Fecha Cierre</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    
 <div class="modal fade" id="playModal" tabindex="-1" aria-labelledby="playModal" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -214,115 +146,194 @@
     </div>
   </div>
 </div>
-
-      <div class="table-responsive py-2">
-        <table class="table table-striped" id="dTable">
-          <thead>
-            <tr>
-              <th hidden> </th>
-              <th>#</th>
-              <th>Acciones</th>
-              <th>Titulo</th>
-              <th>Etiqueta</th>
-              <th>Descripcion/Tarea</th>
-              <th>Responsable</th>
-              <th>Estado</th>
-              <th>Acumulado h:m:s</th>
-              <th>Prioridad</th>
-              <th>Categoria</th>
-              <th>Sitio</th>
-              <th>Departamento</th>
-              <th>Fecha Creacion</th>
-              <th>Fecha Modificacion</th>
-              <th>Fecha Cierre</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for tarea in tareas %}
-            <tr>
-              <td hidden>{{tarea.id}}</td>
-              <td>{{ forloop.counter }}</td>
-              <td>
-                {% if tarea.estado == 1 %}
-                <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
-                {% elif tarea.estado == 2 %}
-                <a class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
-                {% else %}
-                <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
-                {% endif %}
-              </td>
-              <td><a href="editar/tarea/{{tarea.id}}" id="a-tarea-{{tarea.id}}"><b>{{tarea.nombre}}</b></a></td>
-              <td>{{tarea.etiqueta}}</td>
-              <td>{{tarea.descripcion}}</td>
-              <td>{{tarea.responsable}}</td>
-
-              {% for estado in estados %}
-              {% if tarea.estado in estado %}
-              <td id="estado-{{tarea.id}}">{{estado}}</td>
+    
+    
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+            <b>Columnas visibles</b>
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <div class="row row-cols-5 justify-content-md-center">
+              <div class="form-check col">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                <label class="form-check-label" for="flexCheckChecked">
+                Ver finalizadas
+                </label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="0"  type="checkbox" id="todas" checked>
+                <label class="form-check-label" for="todas"><b>Todas</b></label>
+              </div>
+            </div>
+              <div class="row row-cols-6 justify-content-md-center">
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="3"  type="checkbox" id="titulo" checked>
+                <label class="form-check-label" for="titulo">Titulo</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="4" type="checkbox" id="etiqueta" checked>
+                <label class="form-check-label" for="etiqueta">Etiqueta</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="5" type="checkbox" id="descripcion" checked>
+                <label class="form-check-label" for="descripcion">Descripcion</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="6" type="checkbox" id="responsable" checked>
+                <label class="form-check-label" for="responsable">Responsable</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="7" type="checkbox" id="estado" checked>
+                <label class="form-check-label" for="estado">Estado</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="8" type="checkbox" id="temp_acumulado" checked>
+                <label class="form-check-label" for="temp_acumulado">Acumulado</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="9" type="checkbox" id="prioridad" checked>
+                <label class="form-check-label" for="prioridad">Prioridad</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="10" type="checkbox" id="categoria" checked>
+                <label class="form-check-label" for="categoria">Categoria</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="11" type="checkbox" id="sitio" checked>
+                <label class="form-check-label" for="sitio">Sitio</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="12" type="checkbox" id="departamento" checked>
+                <label class="form-check-label" for="departamento">Departamento</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="13" type="checkbox" id="fechaCreacion" checked>
+                <label class="form-check-label" for="fechaCreacion">Fecha Creacion</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="14" type="checkbox" id="fechaModificacion" checked>
+                <label class="form-check-label" for="fechaModificacion">Fecha Mod.</label>
+              </div>
+              <div class="form-check form-check-inline form-switch col">
+                <input class="form-check-input" value="15" type="checkbox" id="fechaCierre" checked>
+                <label class="form-check-label" for="fechaCierre">Fecha Cierre</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="table-responsive py-2">
+      <table class="table table-striped" id="dTable">
+        <thead>
+          <tr>
+            <th hidden> </th>
+            <th>#</th>
+            <th>Acciones</th>
+            <th>Titulo</th>
+            <th>Etiqueta</th>
+            <th>Descripcion/Tarea</th>
+            <th>Responsable</th>
+            <th>Estado</th>
+            <th>Acumulado h:m:s</th>
+            <th>Prioridad</th>
+            <th>Categoria</th>
+            <th>Sitio</th>
+            <th>Departamento</th>
+            <th>Fecha Creacion</th>
+            <th>Fecha Modificacion</th>
+            <th>Fecha Cierre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for tarea in tareas %}
+          <tr>
+            <td hidden>{{tarea.id}}</td>
+            <td>{{ forloop.counter }}</td>
+            <td>
+              {% if tarea.estado == 1 %}
+              <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
+              {% elif tarea.estado == 2 %}
+              <a class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
+              {% else %}
+              <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
               {% endif %}
-              {% endfor %}
+            </td>
+            <td><a href="editar/tarea/{{tarea.id}}" id="a-tarea-{{tarea.id}}"><b>{{tarea.nombre}}</b></a></td>
+            <td>{{tarea.etiqueta}}</td>
+            <td>{{tarea.descripcion}}</td>
+            <td>{{tarea.responsable}}</td>
 
-              <td id="acumulado-{{tarea.id}}">{{tarea.temp_acumulado|date:"H:i:s"}}</td>
-              
-              {% for prioridad in prioridades %}
-              {% if tarea.prioridad in prioridad %}
-              <td>{{prioridad}}</td>
-              {% endif %}
-              {% endfor %}
-
-              {% for categoria in categorias %}
-              {% if tarea.categoria in categoria %}
-              <td>{{categoria}}</td>
-              {% endif %}
-              {% endfor %}
-              
-              {% for sitio in sitios %}
-              {% if tarea.sitio in sitio %}
-              <td>{{sitio}}</td>
-              {% endif %}
-              {% endfor %}
-
-              {% for departamento in departamentos %}
-              {% if tarea.departamento in departamento %}
-              <td>{{departamento}}</td>
-              {% endif %}
-              {% endfor %}
-
-              <td>{{tarea.fecha_creacion}}</td>
-              <td id="fechaMod-{{tarea.id}}">{{tarea.fecha_modificacion}}</td>
-              <td id="fechaCierre-{{tarea.id}}">{{tarea.fecha_finalizacion|default:"-"}}</td>
-            </tr>
+            {% for estado in estados %}
+            {% if tarea.estado in estado %}
+            <td id="estado-{{tarea.id}}">{{estado.1}}</td>
+            {% endif %}
             {% endfor %}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th hidden> </th>
-              <th>#</th>
-              <th>Acciones</th>
-              <th>Titulo</th>
-              <th>Etiqueta</th>
-              <th>Descripcion/Tarea</th>
-              <th>Responsable</th>
-              <th>Estado</th>
-              <th>Tiempo/Minutos</th>
-              <th>Prioridad</th>
-              <th>Categoria</th>
-              <th>Sitio</th>
-              <th>Departamento</th>
-              <th>Fecha Creacion</th>
-              <th>Fecha Modificacion</th>
-              <th>Fecha Cierre</th>
-            </tr>
-          </tfoot>
-        </table>
+
+            <td id="acumulado-{{tarea.id}}">{{tarea.temp_acumulado|date:"H:i:s"}}</td>
+            
+            {% for prioridad in prioridades %}
+            {% if tarea.prioridad in prioridad %}
+            <td>{{prioridad.1}}</td>
+            {% endif %}
+            {% endfor %}
+
+            {% for categoria in categorias %}
+            {% if tarea.categoria in categoria %}
+            <td>{{categoria.1}}</td>
+            {% endif %}
+            {% endfor %}
+            
+            {% for sitio in sitios %}
+            {% if tarea.sitio in sitio %}
+            <td>{{sitio.1}}</td>
+            {% endif %}
+            {% endfor %}
+
+            {% for departamento in departamentos %}
+            {% if tarea.departamento in departamento %}
+            <td>{{departamento.1}}</td>
+            {% endif %}
+            {% endfor %}
+
+            <td>{{tarea.fecha_creacion}}</td>
+            <td id="fechaMod-{{tarea.id}}">{{tarea.fecha_modificacion}}</td>
+            <td id="fechaCierre-{{tarea.id}}">{{tarea.fecha_finalizacion|default:"-"}}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th hidden> </th>
+            <th>#</th>
+            <th>Acciones</th>
+            <th>Titulo</th>
+            <th>Etiqueta</th>
+            <th>Descripcion/Tarea</th>
+            <th>Responsable</th>
+            <th>Estado</th>
+            <th>Tiempo/Minutos</th>
+            <th>Prioridad</th>
+            <th>Categoria</th>
+            <th>Sitio</th>
+            <th>Departamento</th>
+            <th>Fecha Creacion</th>
+            <th>Fecha Modificacion</th>
+            <th>Fecha Cierre</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <br>
+    <form action="exportarTareas" method="POST">{% csrf_token %}
+      <div class="form-group">
+        <button class="btn btn-primary" type="submit">Exportar datos</button>
       </div>
       <br>
-      <form action="exportarTareas" method="POST">{% csrf_token %}
-        <div class="form-group">
-          <button class="btn btn-primary" type="submit">Exportar datos</button>
-        </div>
-        <br>
-      </form>
-    </div>
+    </form>
 </div>
 {% endblock %}
