@@ -67,6 +67,9 @@ $(document).ready(function () {
   var btnConfirmarPausa = document.getElementById("btnConfirmarPausa");
   var tareaStop = document.getElementById("tareaStop");
   var btnConfirmarStop = document.getElementById("btnConfirmarStop");
+  let playId;
+  let pauseId;
+  let stopId;
   var valoresSeleccionados = new Set();
 
   checks.forEach((el) => {
@@ -96,9 +99,11 @@ $(document).ready(function () {
 
   plays.forEach((el) => {
     el.addEventListener("click", function (e) {
-      let playId = $(this).attr("id");
+      playId = $(this).attr("id");
       playId = playId.split("-")[2];
       tareaConfirmar.innerHTML = $(this).attr("value");
+      e.preventDefault();
+      e.stopPropagation();
       btnConfirmar.addEventListener("click", function (e) {
         $("#playModal").modal("hide");
         $.ajax({
@@ -122,6 +127,8 @@ $(document).ready(function () {
             desactivarStop.style.pointerEvents = "auto";
             desactivarPlay.style.filter = "grayscale(100%)";
             desactivarPlay.style.pointerEvents = "none";
+            e.preventDefault();
+            e.stopPropagation();
           },
         });
       });
@@ -130,9 +137,11 @@ $(document).ready(function () {
 
   pauses.forEach((el) => {
     el.addEventListener("click", function (e) {
-      let pauseId = $(this).attr("id");
+      pauseId = $(this).attr("id");
       pauseId = pauseId.split("-")[2];
       tareaPausar.innerHTML = $(this).attr("value");
+      e.preventDefault();
+      e.stopPropagation();
       btnConfirmarPausa.addEventListener("click", function (e) {
         $("#pauseModal").modal("hide");
         $.ajax({
@@ -158,6 +167,8 @@ $(document).ready(function () {
             desactivarPause.style.pointerEvents = "none";
             desactivarPlay.style.filter = "grayscale(0%)";
             desactivarPlay.style.pointerEvents = "auto";
+            e.preventDefault();
+            e.stopPropagation();
           },
         });
       });
@@ -166,9 +177,11 @@ $(document).ready(function () {
 
   stops.forEach((el) => {
     el.addEventListener("click", function (e) {
-      let stopId = $(this).attr("id");
+      stopId = $(this).attr("id");
       stopId = stopId.split("-")[2];
       tareaStop.innerHTML = $(this).attr("value");
+      e.preventDefault();
+      e.stopPropagation();
       btnConfirmarStop.addEventListener("click", function (e) {
         $("#stopModal").modal("hide");
         $.ajax({
@@ -195,6 +208,8 @@ $(document).ready(function () {
             desactivarPause.style.pointerEvents = "none";
             desactivarPlay.style.filter = "grayscale(100%)";
             desactivarPlay.style.pointerEvents = "none";
+            e.preventDefault();
+            e.stopPropagation();
           },
         });
       });
