@@ -159,13 +159,13 @@
           <div class="accordion-body">
             <div class="row row-cols-5 justify-content-md-center">
               <div class="form-check col">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                <input class="form-check-input" type="checkbox" value="Finalizada" name="Finalizadas" id="flexCheckChecked">
                 <label class="form-check-label" for="flexCheckChecked">
                 Ver finalizadas
                 </label>
               </div>
               <div class="form-check form-check-inline form-switch col">
-                <input class="form-check-input" value="0"  type="checkbox" id="todas" checked>
+                <input class="form-check-input" value="0"  type="checkbox" id="todas">
                 <label class="form-check-label" for="todas"><b>Todas</b></label>
               </div>
             </div>
@@ -239,7 +239,7 @@
             <th>Descripcion/Tarea</th>
             <th>Responsable</th>
             <th>Estado</th>
-            <th>Acumulado h:m:s</th>
+            <th>Acumulado</th>
             <th>Prioridad</th>
             <th>Categoria</th>
             <th>Sitio</th>
@@ -274,7 +274,7 @@
             {% endif %}
             {% endfor %}
 
-            <td id="acumulado-{{tarea.id}}">{{tarea.temp_acumulado|date:"H:i:s"}}</td>
+            <td id="acumulado-{{tarea.id}}">{{tarea.temp_acumulado}}</td>
             
             {% for prioridad in prioridades %}
             {% if tarea.prioridad in prioridad %}
@@ -316,7 +316,7 @@
             <th>Descripcion/Tarea</th>
             <th>Responsable</th>
             <th>Estado</th>
-            <th>Tiempo/Minutos</th>
+            <th>Acumulado</th>
             <th>Prioridad</th>
             <th>Categoria</th>
             <th>Sitio</th>

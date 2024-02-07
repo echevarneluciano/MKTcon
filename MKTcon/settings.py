@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'DHCP',
     'Homepage',
     'Tareas',
+    'babel',
 ]
 
 MIDDLEWARE = [

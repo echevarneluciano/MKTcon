@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(primary_key=True, serialize=False)),
                 ('nombre', models.CharField(max_length=50)),
                 ('descripcion', models.CharField(max_length=100)),
-                ('duenio', models.CharField(max_length=100)),
+                ('responsable', models.CharField(max_length=100)),
                 ('estado', models.IntegerField()),
                 ('prioridad', models.IntegerField()),
                 ('categoria', models.IntegerField()),
@@ -27,6 +27,8 @@ class Migration(migrations.Migration):
                 ('fecha_creacion', models.DateField()),
                 ('fecha_modificacion', models.DateField()),
                 ('fecha_finalizacion', models.DateField()),
+                ('temp_acumulado', models.DecimalField(
+                    decimal_places=2, max_digits=20)),
             ],
             options={
                 'db_table': 'tareas_tarea',

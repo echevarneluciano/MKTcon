@@ -44,11 +44,11 @@
                 <select class="form-select" name="etiqueta" id="etiqueta2">
                     {% for etiqueta in etiquetas %}
                     {% if tarea.etiqueta in etiqueta %}
-                    <option selected value="{{etiqueta.0}}">{{etiqueta.1}}</option>
+                    <option selected value="{{etiqueta}}">{{etiqueta}}</option>
                     {% endif %}
                     {% endfor %}
                     {% for etiqueta in etiquetas %}
-                    <option value="{{etiqueta.0}}">{{etiqueta.1}}</option>
+                    <option value="{{etiqueta}}">{{etiqueta}}</option>
                     {% endfor %}
                 </select>
                 </div>

@@ -57,6 +57,30 @@ $(document).ready(function () {
     scrollX: true,
   });
 
+  table
+    .column(7)
+    .search("(?:Pausada|En proceso)", true, false, true)
+    .draw(false);
+  $("input:checkbox").on("change", function () {
+    var finalizadas = $('input:checkbox[name="Finalizadas"]:not(:checked)')
+      .map(function () {
+        return "^" + this.value + "$";
+      })
+      .get()
+      .join("|");
+    table
+      .column(7)
+      .search(
+        finalizadas
+          ? "(?:Pausada|En proceso)"
+          : "(?:Finalizada|Pausada|En proceso)",
+        true,
+        false,
+        true
+      )
+      .draw(false);
+  });
+
   var checks = document.querySelectorAll(".form-check-input");
   var plays = document.querySelectorAll(".a-play");
   var pauses = document.querySelectorAll(".a-pause");
@@ -148,16 +172,16 @@ $(document).ready(function () {
           url: "http://127.0.0.1:8000/tareas/pause/tarea/" + pauseId,
           type: "GET",
           success: function (data) {
-            var id = data[0].id;
+            var id = data.tarea[0].id;
             var estadoCambiar = document.getElementById("estado-" + id);
             var acumuladoCambiar = document.getElementById("acumulado-" + id);
             var fechaMod = document.getElementById("fechaMod-" + id);
-            var fechaSinFormato = data[0].fecha_modificacion;
+            var fechaSinFormato = data.tarea[0].fecha_modificacion;
             var fechaFormateada =
               moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
             fechaMod.innerHTML = fechaFormateada;
             estadoCambiar.innerHTML = "Pausada";
-            acumuladoCambiar.innerHTML = data[0].temp_acumulado;
+            acumuladoCambiar.innerHTML = data.acumulado;
             var desactivarPlay = document.getElementById("a-play-" + id);
             var desactivarPause = document.getElementById("a-pause-" + id);
             var desactivarStop = document.getElementById("a-stop-" + id);
@@ -188,17 +212,17 @@ $(document).ready(function () {
           url: "http://127.0.0.1:8000/tareas/stop/tarea/" + stopId,
           type: "GET",
           success: function (data) {
-            var id = data[0].id;
+            var id = data.tarea[0].id;
             var estadoCambiar = document.getElementById("estado-" + id);
             var acumuladoCambiar = document.getElementById("acumulado-" + id);
             var fechaFin = document.getElementById("fechaCierre-" + id);
-            var fechaCierreSinFormato = data[0].fecha_finalizacion;
+            var fechaCierreSinFormato = data.tarea[0].fecha_finalizacion;
             var fechaCierreFormateada = moment(fechaCierreSinFormato).format(
               "DD MMMM YYYY HH:mm"
             );
             fechaFin.innerHTML = fechaCierreFormateada;
             estadoCambiar.innerHTML = "Finalizada";
-            acumuladoCambiar.innerHTML = data[0].temp_acumulado;
+            acumuladoCambiar.innerHTML = data.acumulado;
             var desactivarPlay = document.getElementById("a-play-" + id);
             var desactivarPause = document.getElementById("a-pause-" + id);
             var desactivarStop = document.getElementById("a-stop-" + id);
