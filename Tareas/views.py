@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from Tareas.admin import TareaResource
-from Tareas.models import Tarea
+from Tareas.models import Tarea, Departamento, Sitio
 from datetime import datetime, timedelta
 from babel.dates import format_timedelta
 
@@ -25,8 +25,9 @@ def homeTareas(request):
                 )
             prioridades = tarea.PRIORIDADES
             categorias = tarea.CATEGORIAS
-            sitios = tarea.SITIOS
-            departamentos = tarea.DEPARTAMENTOS
+            sitios = Sitio.objects.all().values_list()
+            departamentos = Departamento.objects.all().values_list()
+
             return render(request, 'homeTareas.html', {'tareas': tareas, 'estados': estados, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos})
         else:
             creada = Tarea.objects.create(
@@ -146,8 +147,8 @@ def editarTarea(request, id):
             etiquetas = Tarea.objects.all().values_list('etiqueta', flat=True).distinct()
             prioridades = tarea.PRIORIDADES
             categorias = tarea.CATEGORIAS
-            sitios = tarea.SITIOS
-            departamentos = tarea.DEPARTAMENTOS
+            sitios = Sitio.objects.all().values_list()
+            departamentos = Departamento.objects.all().values_list()
             tareaEditar = Tarea.objects.get(id=id)
             return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos})
         else:
