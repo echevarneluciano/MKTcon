@@ -9,10 +9,10 @@ var tareaId = $("[name='id']").val();
 btnConfirmarEliminar.addEventListener("click", function (e) {
   $("#eliminarModal").modal("hide");
   $.ajax({
-    url: "http://127.0.0.1:8000/tareas/eliminar/tarea/" + tareaId,
+    url: "/tareas/eliminar/tarea/" + tareaId,
     type: "GET",
     success: function () {
-      window.location.href = "http://127.0.0.1:8000/tareas";
+      window.location.href = "/tareas";
     },
   });
 });

@@ -131,7 +131,7 @@ $(document).ready(function () {
       btnConfirmar.addEventListener("click", function (e) {
         $("#playModal").modal("hide");
         $.ajax({
-          url: "http://127.0.0.1:8000/tareas/play/tarea/" + playId,
+          url: "/tareas/play/tarea/" + playId,
           type: "GET",
           success: function (data) {
             var id = data[0].id;
@@ -169,7 +169,7 @@ $(document).ready(function () {
       btnConfirmarPausa.addEventListener("click", function (e) {
         $("#pauseModal").modal("hide");
         $.ajax({
-          url: "http://127.0.0.1:8000/tareas/pause/tarea/" + pauseId,
+          url: "/tareas/pause/tarea/" + pauseId,
           type: "GET",
           success: function (data) {
             var id = data.tarea[0].id;
@@ -209,7 +209,7 @@ $(document).ready(function () {
       btnConfirmarStop.addEventListener("click", function (e) {
         $("#stopModal").modal("hide");
         $.ajax({
-          url: "http://127.0.0.1:8000/tareas/stop/tarea/" + stopId,
+          url: "/tareas/stop/tarea/" + stopId,
           type: "GET",
           success: function (data) {
             var id = data.tarea[0].id;
