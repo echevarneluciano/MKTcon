@@ -6,10 +6,12 @@ from Tareas.admin import TareaResource
 from Tareas.models import Tarea, Departamento, Sitio
 from datetime import datetime, timedelta
 from babel.dates import format_timedelta
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
 
+@login_required
 def homeTareas(request):
     try:
         if request.method == 'GET':
@@ -55,6 +57,7 @@ def homeTareas(request):
         return redirect('homeTareas')
 
 
+@login_required
 def playTarea(request, id):
     try:
         buscada = Tarea.objects.filter(id=id)
@@ -66,11 +69,13 @@ def playTarea(request, id):
             tarea = list(Tarea.objects.filter(id=id).values())
             return JsonResponse(tarea, safe=False)
         else:
-            return redirect('homeTareas')
+            tarea = list(buscada.values())
+            return JsonResponse(tarea, safe=False)
     except Exception as e:
-        return redirect('homeTareas')
+        print(e)
 
 
+@login_required
 def pauseTarea(request, id):
     try:
         buscada = Tarea.objects.filter(id=id)
@@ -88,11 +93,18 @@ def pauseTarea(request, id):
             tarea_acumulado = {'acumulado': acumulado_esp, 'tarea': tarea}
             return JsonResponse(tarea_acumulado, safe=False)
         else:
-            return redirect('/homeTareas')
+            tarea = list(buscada.values())
+            acumulado = timedelta(seconds=float(buscada[0].temp_acumulado))
+            acumulado_esp = format_timedelta(
+                acumulado, threshold=1, locale='es'
+            )
+            tarea_acumulado = {'acumulado': acumulado_esp, 'tarea': tarea}
+            return JsonResponse(tarea_acumulado, safe=False)
     except Exception as e:
-        return redirect('/homeTareas')
+        print(e)
 
 
+@login_required
 def stopTarea(request, id):
     try:
         buscada = Tarea.objects.filter(id=id)
@@ -103,7 +115,10 @@ def stopTarea(request, id):
                 fecha_finalizacion=datetime.now(),
             )
             tarea = list(buscada.values())
-            return JsonResponse(tarea, safe=False)
+            acumulado_esp = format_timedelta(
+                timedelta(seconds=0), threshold=1, locale='es'
+            )
+            return JsonResponse({'tarea': tarea, 'acumulado': acumulado_esp})
         if (buscada[0] != 3):
             Tarea.objects.filter(id=id).update(
                 estado=3,
@@ -119,9 +134,9 @@ def stopTarea(request, id):
             tarea_acumulado = {'acumulado': acumulado_esp, 'tarea': tarea}
             return JsonResponse(tarea_acumulado, safe=False)
         else:
-            return redirect('homeTareas')
+            return JsonResponse({'ok': False})
     except Exception as e:
-        return redirect('homeTareas')
+        print(e)
 
 
 def actualizaAcumulado(id):
@@ -140,6 +155,7 @@ def actualizaAcumulado(id):
         print(e)
 
 
+@login_required
 def editarTarea(request, id):
     try:
         if request.method == 'GET':
@@ -170,6 +186,7 @@ def editarTarea(request, id):
         return redirect('homeTareas')
 
 
+@login_required
 def eliminarTarea(request, id):
     try:
         Tarea.objects.filter(id=id).delete()
@@ -182,6 +199,7 @@ def eliminarTarea(request, id):
         return JsonResponse({'ok': False})
 
 
+@login_required
 def exportarTareas(request):
     try:
         resource = TareaResource()
