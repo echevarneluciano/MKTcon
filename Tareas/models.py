@@ -22,7 +22,7 @@ class Tarea(models.Model):
     )
 
     id = models.AutoField(primary_key=True)
-    nombre = models.CharField(max_length=50)
+    nombre = models.CharField(max_length=150)
     etiqueta = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=400)
     temp_acumulado = models.DecimalField(
@@ -55,3 +55,15 @@ class Sitio(models.Model):
 
     class Meta:
         db_table = 'tareas_sitio'
+
+
+class Comentario(models.Model):
+    id = models.AutoField(primary_key=True)
+    tarea = models.IntegerField()
+    usuario = models.CharField(max_length=100)
+    comentario = models.CharField(max_length=400)
+    fecha_creacion = models.DateTimeField(null=True, blank=True)
+    fecha_modificacion = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'tareas_comentario'

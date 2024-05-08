@@ -1,9 +1,9 @@
-import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from Tareas.admin import TareaResource
-from Tareas.models import Tarea, Departamento, Sitio
+from Tareas.models import Tarea, Departamento, Sitio, Comentario
+from django.db.models import Q
 from datetime import datetime, timedelta
 from babel.dates import format_timedelta
 from django.contrib.auth.decorators import login_required
@@ -29,7 +29,7 @@ def homeTareas(request):
                 responsables = [request.user.username]
 
             tareas = Tarea.objects.filter(
-                fecha_creacion__gte=datetime.now() - timedelta(days=30)).order_by('-fecha_creacion')
+                Q(fecha_creacion__gte=datetime.now() - timedelta(days=30)) | ~Q(estado=3)).order_by('-fecha_creacion')
             tarea = Tarea()
             etiquetas = Tarea.objects.all().values_list('etiqueta', flat=True).distinct()
             estados = tarea.ESTADOS
@@ -191,7 +191,9 @@ def editarTarea(request, id):
             sitios = Sitio.objects.all().values_list()
             departamentos = Departamento.objects.all().values_list()
             tareaEditar = Tarea.objects.get(id=id)
-            return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos, 'responsables': responsables, 'esSupervisor': esSupervisor, 'usuario': usuario})
+            comentarios = Comentario.objects.filter(
+                tarea=tareaEditar.id).order_by('-fecha_creacion')
+            return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos, 'responsables': responsables, 'esSupervisor': esSupervisor, 'usuario': usuario, 'comentarios': comentarios})
         else:
             tarea = Tarea.objects.get(id=id)
             tarea.nombre = request.POST['nombre']
@@ -239,3 +241,17 @@ def exportarTareas(request):
         messages.error(request, 'Error, no se pudo exportar',
                        extra_tags='alert-danger')
         return redirect('/')
+
+
+@login_required
+def comentarTarea(request, id):
+    if request.method == 'POST':
+        idUsuario = User.objects.get(id=request.user.id),
+        Comentario.objects.create(
+            usuario=idUsuario[0].username,
+            tarea=Tarea.objects.get(id=id).id,
+            comentario=request.POST['comentario'],
+            fecha_creacion=datetime.now(),
+            fecha_modificacion=datetime.now(),
+        )
+        return redirect('editarTarea', id=id)

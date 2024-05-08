@@ -3,7 +3,7 @@
 {% block title %} Editar tarea {% endblock %}
 
 {% block body %}
-<d class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true">
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
         <div class="modal-header">
@@ -134,8 +134,37 @@
             </form>
             </div>
         </div>
-        </div>
-    </div>
+        <h5>Comentarios</h5>
+        <div class="col-12">
+            <div class="card">
+            <div class="card-body">
+            <form  action="agregarComentario/{{tarea.id}}" class="row g-3"  method="POST">{% csrf_token %}
+                <input type="hidden" name="id" value="{{tarea.id}}">
+                <div class="form-group col-12">
+                <label for="comentario">Texto:</label>
+                <textarea  class="form-control" name="comentario" id="comentario" rows="1" required></textarea>
+                <div class="form-group py-2">
+                    <button class="btn btn-primary" type="submit">Comentar</button>
+                </div>
+            </div>
+            </form>
+            </div>
+            </div>
+                {% for comentario in comentarios %}
+                <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{comentario.usuario}}:</h5>
+                        <span class="card-text">{{comentario.comentario}}</span>
+                        <p>{{comentario.fecha_modificacion}}</p>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+        </div>       
+</div>
 
 
 {% endblock %}
