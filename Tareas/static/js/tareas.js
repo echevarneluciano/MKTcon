@@ -16,8 +16,6 @@ $("#etiqueta").select2({
   width: "resolve",
 });
 
-$("#prioridad").select2({});
-
 $(document).ready(function () {
   table = $("#dTable").DataTable({
     initComplete: function () {

@@ -1,7 +1,6 @@
 $("#etiqueta2").select2({
   tags: true,
 });
-$("#prioridad").select2({});
 
 var btnConfirmarEliminar = document.getElementById("btnConfirmarEliminar");
 var tareaId = $("[name='id']").val();

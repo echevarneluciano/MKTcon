@@ -7,6 +7,7 @@ from Tareas.models import Tarea, Departamento, Sitio
 from datetime import datetime, timedelta
 from babel.dates import format_timedelta
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here.
 
@@ -15,7 +16,19 @@ from django.contrib.auth.decorators import login_required
 def homeTareas(request):
     try:
         if request.method == 'GET':
-            tareas = Tarea.objects.filter(responsable=request.user).filter(
+
+            usuario = User.objects.get(id=request.user.id)
+            userGroup = User.objects.get(
+                id=request.user.id
+            ).groups.all()
+            esSupervisor = (userGroup.__len__() == 1) and (
+                userGroup[0].name == 'Supervisor')
+            if esSupervisor:
+                responsables = User.objects.all().values_list('username', flat=True).distinct()
+            else:
+                responsables = [request.user.username]
+
+            tareas = Tarea.objects.filter(
                 fecha_creacion__gte=datetime.now() - timedelta(days=30)).order_by('-fecha_creacion')
             tarea = Tarea()
             etiquetas = Tarea.objects.all().values_list('etiqueta', flat=True).distinct()
@@ -30,7 +43,7 @@ def homeTareas(request):
             sitios = Sitio.objects.all().values_list()
             departamentos = Departamento.objects.all().values_list()
 
-            return render(request, 'homeTareas.html', {'tareas': tareas, 'estados': estados, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos})
+            return render(request, 'homeTareas.html', {'tareas': tareas, 'estados': estados, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos, 'responsables': responsables, 'esSupervisor': esSupervisor, 'usuario': usuario})
         else:
             creada = Tarea.objects.create(
                 nombre=request.POST['nombre'],
@@ -42,7 +55,7 @@ def homeTareas(request):
                 descripcion=request.POST['descripcion'],
                 fecha_creacion=datetime.now(),
                 fecha_modificacion=datetime.now(),
-                responsable=request.user.__str__(),
+                responsable=request.POST['responsable'],
             )
             if (creada):
                 messages.success(request, 'Tarea agregada',
@@ -159,6 +172,18 @@ def actualizaAcumulado(id):
 def editarTarea(request, id):
     try:
         if request.method == 'GET':
+
+            usuario = User.objects.get(id=request.user.id)
+            userGroup = User.objects.get(
+                id=request.user.id
+            ).groups.all()
+            esSupervisor = (userGroup.__len__() == 1) and (
+                userGroup[0].name == 'Supervisor')
+            if esSupervisor:
+                responsables = User.objects.all().values_list('username', flat=True).distinct()
+            else:
+                responsables = [request.user.username]
+
             tarea = Tarea()
             etiquetas = Tarea.objects.all().values_list('etiqueta', flat=True).distinct()
             prioridades = tarea.PRIORIDADES
@@ -166,7 +191,7 @@ def editarTarea(request, id):
             sitios = Sitio.objects.all().values_list()
             departamentos = Departamento.objects.all().values_list()
             tareaEditar = Tarea.objects.get(id=id)
-            return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos})
+            return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos, 'responsables': responsables, 'esSupervisor': esSupervisor, 'usuario': usuario})
         else:
             tarea = Tarea.objects.get(id=id)
             tarea.nombre = request.POST['nombre']
@@ -176,6 +201,7 @@ def editarTarea(request, id):
             tarea.sitio = request.POST['sitio']
             tarea.departamento = request.POST['departamento']
             tarea.descripcion = request.POST['descripcion']
+            tarea.responsable = request.POST['responsable']
             tarea.save()
             messages.success(request, 'Tarea actualizada',
                              extra_tags='alert-success')

@@ -34,50 +34,64 @@
                     <label for="nombre">Titulo</label>
                     <input class="form-control" placeholder="Titulo de la Tarea"  type="text" name="nombre" id="nombre" maxlength="50"  required>
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-4">
+                    <label for="responsable">Responsable</label>
+                    <select class="form-select"  name="responsable" id="responsable">
+                      {% if esSupervisor %}
+                        {% for responsable in responsables %}
+                          <option value="{{responsable}}">{{responsable}}</option>
+                        {% endfor %}
+                      {% else %}
+                        <option value="{{usuario}}" disabled selected>{{usuario}}</option>
+                      {% endif %}
+                    </select>
+                  </div>
+                  <div class="form-group col-md-4">
                     <label for="etiqueta">Etiqueta</label>
-                    <select class="js-example-responsive" style="width: 75%" name="etiqueta" id="etiqueta">
+                    <br>
+                    <select class="form-select" style="width: 100%" name="etiqueta" id="etiqueta">
                       {% for etiqueta in etiquetas %}
                       <option value="{{etiqueta}}">{{etiqueta}}</option>
                       {% endfor %}
                     </select>
                   </div>
-                  <div class="form-group col-md-6">
+                  <div class="form-group col-md-4">
                     <label for="prioridad">Prioridad</label>
-                    <select class="js-example-responsive" style="width: 75%" name="prioridad" id="prioridad">
+                    <br>
+                    <select class="form-select" style="width: 100%" name="prioridad" id="prioridad">
                       {% for prioridad in prioridades %}
                       <option value="{{prioridad.0}}">{{prioridad.1}}</option>
                       {% endfor %}
                     </select>
                   </div>
-                <div class="form-group col-md-4">
-                  <label for="categoria">Categoria</label>
-                  <select class="form-select" name="categoria" id="categoria">
+                  <div class="form-group col-md-4">
+                    <label for="categoria">Categoria</label>
+                    <select class="form-select" name="categoria" id="categoria">
                     {% for categoria in categorias %}
                     <option value="{{categoria.0}}">{{categoria.1}}</option>
                     {% endfor %}
                   </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="sitio">Sitio</label>
-                  <select class="form-select" name="sitio" id="sitio">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="sitio">Sitio</label>
+                    <select class="form-select" name="sitio" id="sitio">
                     {% for sitio in sitios %}
                     <option value="{{sitio.0}}">{{sitio.1}}</option>
                     {% endfor %}
                   </select>
-                </div>
-                <div class="form-group col-md-4">
-                  <label for="departamento">Departamento</label>
-                  <select class="form-select" name="departamento" id="departamento">
+                  </div>
+                  <div class="form-group col-md-4">
+                    <label for="departamento">Departamento</label>
+                    <select class="form-select" name="departamento" id="departamento">
                     {% for departamento in departamentos %}
                     <option value="{{departamento.0}}">{{departamento.1}}</option>
                     {% endfor %}
-                  </select>
-                </div>
-                <div class="form-group col-md-12">
-                  <label for="descripcion">Descripcion</label>
-                  <textarea class="form-control" name="descripcion" id="descripcion" rows="3" required></textarea>
-                </div>
+                    </select>
+                  </div>
+                  <div class="form-group col-md-12">
+                    <label for="descripcion">Descripcion</label>
+                    <textarea class="form-control" name="descripcion" id="descripcion" rows="3" required></textarea>
+                  </div>
                   <div class="form-group col-md-12">
                     <button class="btn btn-primary" type="submit">Agregar</button>
                   </div>
