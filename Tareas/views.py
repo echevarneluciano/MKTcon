@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from babel.dates import format_timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import serializers
 
 # Create your views here.
 
@@ -245,13 +246,33 @@ def exportarTareas(request):
 
 @login_required
 def comentarTarea(request, id):
-    if request.method == 'POST':
-        idUsuario = User.objects.get(id=request.user.id),
-        Comentario.objects.create(
-            usuario=idUsuario[0].username,
-            tarea=Tarea.objects.get(id=id).id,
-            comentario=request.POST['comentario'],
-            fecha_creacion=datetime.now(),
-            fecha_modificacion=datetime.now(),
-        )
-        return redirect('editarTarea', id=id)
+    try:
+        if request.method == 'POST':
+            idUsuario = User.objects.get(id=request.user.id),
+            comentario = Comentario.objects.create(
+                usuario=idUsuario[0].username,
+                tarea=Tarea.objects.get(id=id).id,
+                comentario=request.POST['comentario'],
+                fecha_creacion=datetime.now(),
+                fecha_modificacion=datetime.now())
+            comentarioJson = {'comentario': comentario.comentario,
+                              'fecha_creacion': str(comentario.fecha_creacion), 'usuario': idUsuario[0].username, 'id': comentario.id}
+            return JsonResponse(comentarioJson, safe=False)
+    except Exception as e:
+        messages.error(request, 'Error, no se pudo eliminar',
+                       extra_tags='alert-danger')
+        return JsonResponse({'ok': False})
+
+
+@login_required
+def eliminarComentario(request, id):
+    try:
+        print(id)
+        Comentario.objects.filter(id=id).delete()
+        messages.success(request, 'Comentario eliminado',
+                         extra_tags='alert-success')
+        return JsonResponse({'ok': True})
+    except Exception as e:
+        messages.error(request, 'Error, no se pudo eliminar',
+                       extra_tags='alert-danger')
+        return JsonResponse({'ok': False})

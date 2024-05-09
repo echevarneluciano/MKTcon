@@ -20,6 +20,25 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="eliminarModal2" tabindex="-1" aria-labelledby="eliminarModal2" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="eliminarModal2">Eliminar comentario</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            ¿Desea eliminar el comentario?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" id="btnConfirmarEliminar2">Confirmar</button>
+        </div>
+        </div>
+    </div>
+</div>
+
 <div class="row d-flex justify-content-center vh-100">
     {% if messages %}
         {% for message in messages %}
@@ -30,7 +49,7 @@
         {% endfor %}
         {% endif %}
         <div class="col-md-6 col-sm-12 col-xl-9 col-lg-9">
-        <h5>Editar Tarea</h5>
+        <h5>Detalle - Editar Tarea</h5>
         <div class="card">
             <div class="card-body">
             <form class="row g-3"  method="POST">{% csrf_token %}
@@ -138,25 +157,29 @@
         <div class="col-12">
             <div class="card">
             <div class="card-body">
-            <form  action="agregarComentario/{{tarea.id}}" class="row g-3"  method="POST">{% csrf_token %}
+            <form id="formComentar" class="row g-3"  method="POST">{% csrf_token %}
                 <input type="hidden" name="id" value="{{tarea.id}}">
                 <div class="form-group col-12">
                 <label for="comentario">Texto:</label>
-                <textarea  class="form-control" name="comentario" id="comentario" rows="1" required></textarea>
+                <textarea id="campoComentario"  class="form-control" name="comentario" id="comentario" rows="1" required></textarea>
                 <div class="form-group py-2">
-                    <button class="btn btn-primary" type="submit">Comentar</button>
+                    <button class="btn btn-primary" type="submit" id="btnComentar">Comentar</button>
                 </div>
             </div>
             </form>
             </div>
             </div>
+            <div id="nuevoComentario"></div>
                 {% for comentario in comentarios %}
                 <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{comentario.usuario}}:</h5>
-                        <span class="card-text">{{comentario.comentario}}</span>
-                        <p>{{comentario.fecha_modificacion}}</p>
+                        <h5 >{{comentario.usuario}}:&nbsp</h5> 
+                        {{comentario.comentario}}
+                        <div class="d-flex bd-highlight">
+                        <p class=" w-100 bd-highlight">{{comentario.fecha_modificacion}}</p>
+                            <button name="btEliminarComentario" value="{{comentario.id}}" class="btn btn-danger  flex-shrink-1 bd-highlight" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal2" type="button">Eliminar</button>
+                        </div>
                     </div>
                 </div>
                 </div>

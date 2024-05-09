@@ -11,4 +11,6 @@ urlpatterns = [
     path('exportarTareas', views.exportarTareas, name='exportarTareas'),
     path('editar/tarea/agregarComentario/<id>',
          views.comentarTarea, name='comentarTarea'),
+    path('editar/tarea/eliminarComentario/<id>',
+         views.eliminarComentario, name='eliminarComentario'),
 ]
