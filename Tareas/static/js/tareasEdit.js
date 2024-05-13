@@ -25,7 +25,7 @@ btnConfirmarEliminar2.addEventListener("click", function (e) {
     url: "/tareas/editar/tarea/eliminarComentario/" + valorComentario,
     type: "GET",
     success: function () {
-      window.location.href = "/tareas/editar/tarea/" + tareaId;
+      $("#" + valorComentario).remove();
     },
   });
 });
@@ -46,8 +46,9 @@ $(document).ready(function () {
         $("#campoComentario").val("");
         $("#nuevoComentario").append(
           '<div class="col-12"' +
+            "id=" +
             data.id +
-            '">' +
+            ">" +
             '<div class="card">' +
             '<div class="card-body">' +
             "<h5 >" +

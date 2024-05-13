@@ -267,11 +267,16 @@ def comentarTarea(request, id):
 @login_required
 def eliminarComentario(request, id):
     try:
-        print(id)
-        Comentario.objects.filter(id=id).delete()
-        messages.success(request, 'Comentario eliminado',
-                         extra_tags='alert-success')
-        return JsonResponse({'ok': True})
+        nameUsuario = User.objects.get(id=request.user.id).username
+        if (nameUsuario == Comentario.objects.get(id=id).usuario):
+            Comentario.objects.filter(id=id).delete()
+            messages.success(request, 'Comentario eliminado',
+                             extra_tags='alert-success')
+            return JsonResponse({'ok': True})
+        else:
+            messages.error(request, 'Error, no es posible eliminar comentarios de otro usuario',
+                           extra_tags='alert-danger')
+            return JsonResponse({'ok': False})
     except Exception as e:
         messages.error(request, 'Error, no se pudo eliminar',
                        extra_tags='alert-danger')

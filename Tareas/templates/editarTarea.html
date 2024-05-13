@@ -160,7 +160,7 @@
             <form id="formComentar" class="row g-3"  method="POST">{% csrf_token %}
                 <input type="hidden" name="id" value="{{tarea.id}}">
                 <div class="form-group col-12">
-                <label for="comentario">Texto:</label>
+                <label for="campoComentario">Texto:</label>
                 <textarea id="campoComentario"  class="form-control" name="comentario" id="comentario" rows="1" required></textarea>
                 <div class="form-group py-2">
                     <button class="btn btn-primary" type="submit" id="btnComentar">Comentar</button>
@@ -171,7 +171,7 @@
             </div>
             <div id="nuevoComentario"></div>
                 {% for comentario in comentarios %}
-                <div class="col-12">
+                <div class="col-12" id="{{comentario.id}}">
                 <div class="card">
                     <div class="card-body">
                         <h5 >{{comentario.usuario}}:&nbsp</h5> 
