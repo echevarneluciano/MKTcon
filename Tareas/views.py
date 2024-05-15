@@ -2,13 +2,13 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from Tareas.admin import TareaResource
-from Tareas.models import Tarea, Departamento, Sitio, Comentario
+from Tareas.models import Tarea, Departamento, Sitio, Comentario, Archivo
 from django.db.models import Q
 from datetime import datetime, timedelta
 from babel.dates import format_timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.core import serializers
+from django.core.files.storage import FileSystemStorage
 
 # Create your views here.
 
@@ -58,6 +58,18 @@ def homeTareas(request):
                 fecha_modificacion=datetime.now(),
                 responsable=request.POST['responsable'],
             )
+            if len(request.FILES) > 0:
+                archivo = request.FILES['archivo']
+                urlArchivo = datetime.now().strftime(
+                    '%Y%m%d%H%M%S')+'_'+archivo.name
+                fs = FileSystemStorage(
+                    location='./Tareas/static/archivos', base_url='archivos')
+                fs.save(urlArchivo, archivo, max_length=100)
+                Archivo.objects.create(
+                    tarea=creada.id,
+                    url=urlArchivo,
+                    fecha_creacion=datetime.now(),
+                )
             if (creada):
                 messages.success(request, 'Tarea agregada',
                                  extra_tags='alert-success')

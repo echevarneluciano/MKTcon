@@ -67,3 +67,14 @@ class Comentario(models.Model):
 
     class Meta:
         db_table = 'tareas_comentario'
+
+
+class Archivo(models.Model):
+    id = models.AutoField(primary_key=True)
+    tarea = models.IntegerField()
+    comentario = models.IntegerField(null=True, blank=True)
+    url = models.CharField(max_length=400)
+    fecha_creacion = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'tareas_archivo'
