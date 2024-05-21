@@ -131,7 +131,6 @@
                     <option selected value="{{departamento.0}}">{{departamento.1}}</option>
                     {% endif %}
                     {% endfor %}
-                
                 {% for departamento in departamentos %}
                 <option value="{{departamento.0}}">{{departamento.1}}</option>
                 {% endfor %}
@@ -140,6 +139,14 @@
             <div class="form-group col-md-12">
                 <label for="descripcion">Descripcion</label>
                 <textarea  class="form-control" name="descripcion" id="descripcion" rows="3" required>{{tarea.descripcion}}</textarea>
+            </div>
+            <div class="form-group col-md-12">
+            <p>
+                {% for adjunto in adjuntosTarea %}
+                Archivo adjunto:&nbsp
+                <a href="/tareas/editar/tarea/descargar/{{adjunto.url}}">{{adjunto.url}}</a>
+                {% endfor %}
+            </p>
             </div>
                 <div class="form-group col-md-10">
                 <button class="btn btn-primary" type="submit">Editar</button>
@@ -157,11 +164,15 @@
         <div class="col-12">
             <div class="card">
             <div class="card-body">
-            <form id="formComentar" class="row g-3"  method="POST">{% csrf_token %}
+            <form id="formComentar" enctype="multipart/form-data" class="row g-3"  method="POST">{% csrf_token %}
                 <input type="hidden" name="id" value="{{tarea.id}}">
                 <div class="form-group col-12">
                 <label for="campoComentario">Texto:</label>
                 <textarea id="campoComentario"  class="form-control" name="comentario" id="comentario" rows="1" required></textarea>
+                <div class="form-group col-md-12">
+                    <label for="archivo">Adjuntar Archivo:</label>
+                    <input class="form-control" type="file" name="archivo" id="archivo">
+                </div>
                 <div class="form-group py-2">
                     <button class="btn btn-primary" type="submit" id="btnComentar">Comentar</button>
                 </div>
@@ -177,9 +188,15 @@
                         <h5 >{{comentario.usuario}}:&nbsp</h5> 
                         {{comentario.comentario}}
                         <div class="d-flex bd-highlight">
-                        <p class=" w-100 bd-highlight">{{comentario.fecha_modificacion}}</p>
+                        <p class=" w-100 bd-highlight">{{comentario.fecha_creacion}}</p>
                             <button name="btEliminarComentario" value="{{comentario.id}}" class="btn btn-danger  flex-shrink-1 bd-highlight" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal2" type="button">Eliminar</button>
                         </div>
+                        {% if comentario.url %}
+                        <p>
+                            Archivo adjunto:&nbsp
+                            <a href="/tareas/editar/tarea/descargar/{{comentario.url}}">{{comentario.url}}</a>
+                        </p>
+                        {% endif %}
                     </div>
                 </div>
                 </div>

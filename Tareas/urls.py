@@ -13,4 +13,6 @@ urlpatterns = [
          views.comentarTarea, name='comentarTarea'),
     path('editar/tarea/eliminarComentario/<id>',
          views.eliminarComentario, name='eliminarComentario'),
+    path('editar/tarea/descargar/<nombre>',
+         views.descargarArchivo, name='descargarArchivo'),
 ]

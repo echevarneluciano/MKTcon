@@ -1,4 +1,4 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from Tareas.admin import TareaResource
@@ -9,6 +9,9 @@ from babel.dates import format_timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+from django.db import connection
+from .querys import comentarios_archivo
 
 # Create your views here.
 
@@ -66,7 +69,7 @@ def homeTareas(request):
                     location='./Tareas/static/archivos', base_url='archivos')
                 fs.save(urlArchivo, archivo, max_length=100)
                 Archivo.objects.create(
-                    tarea=creada.id,
+                    tarea=creada,
                     url=urlArchivo,
                     fecha_creacion=datetime.now(),
                 )
@@ -185,7 +188,6 @@ def actualizaAcumulado(id):
 def editarTarea(request, id):
     try:
         if request.method == 'GET':
-
             usuario = User.objects.get(id=request.user.id)
             userGroup = User.objects.get(
                 id=request.user.id
@@ -196,17 +198,18 @@ def editarTarea(request, id):
                 responsables = User.objects.all().values_list('username', flat=True).distinct()
             else:
                 responsables = [request.user.username]
-
             tarea = Tarea()
             etiquetas = Tarea.objects.all().values_list('etiqueta', flat=True).distinct()
+            adjuntosTarea = Archivo.objects.filter(
+                tarea=id, comentario__isnull=True)
             prioridades = tarea.PRIORIDADES
             categorias = tarea.CATEGORIAS
             sitios = Sitio.objects.all().values_list()
             departamentos = Departamento.objects.all().values_list()
             tareaEditar = Tarea.objects.get(id=id)
-            comentarios = Comentario.objects.filter(
-                tarea=tareaEditar.id).order_by('-fecha_creacion')
-            return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos, 'responsables': responsables, 'esSupervisor': esSupervisor, 'usuario': usuario, 'comentarios': comentarios})
+            comentariosArchivos = comentarios_archivo(
+                connection, id)
+            return render(request, 'editarTarea.html', {'tarea': tareaEditar, 'etiquetas': etiquetas, 'prioridades': prioridades, 'categorias': categorias, 'sitios': sitios, 'departamentos': departamentos, 'responsables': responsables, 'esSupervisor': esSupervisor, 'usuario': usuario, 'comentarios': comentariosArchivos, 'adjuntosTarea': adjuntosTarea})
         else:
             tarea = Tarea.objects.get(id=id)
             tarea.nombre = request.POST['nombre']
@@ -222,6 +225,7 @@ def editarTarea(request, id):
                              extra_tags='alert-success')
             return redirect('homeTareas')
     except Exception as e:
+        print(e)
         messages.error(request, 'Error, no se pudo actualizar',
                        extra_tags='alert-danger')
         return redirect('homeTareas')
@@ -260,15 +264,30 @@ def exportarTareas(request):
 def comentarTarea(request, id):
     try:
         if request.method == 'POST':
+            tarea = Tarea.objects.get(id=id)
             idUsuario = User.objects.get(id=request.user.id),
             comentario = Comentario.objects.create(
                 usuario=idUsuario[0].username,
-                tarea=Tarea.objects.get(id=id).id,
+                tarea=tarea.id,
                 comentario=request.POST['comentario'],
                 fecha_creacion=datetime.now(),
                 fecha_modificacion=datetime.now())
             comentarioJson = {'comentario': comentario.comentario,
                               'fecha_creacion': str(comentario.fecha_creacion), 'usuario': idUsuario[0].username, 'id': comentario.id}
+            if len(request.FILES) > 0:
+                archivo = request.FILES['archivo']
+                urlArchivo = datetime.now().strftime(
+                    '%Y%m%d%H%M%S')+'_'+archivo.name
+                fs = FileSystemStorage(
+                    location='./Tareas/static/archivos', base_url='archivos')
+                fs.save(urlArchivo, archivo, max_length=100)
+                Archivo.objects.create(
+                    tarea=tarea,
+                    comentario=comentario,
+                    url=urlArchivo,
+                    fecha_creacion=datetime.now(),
+                )
+                comentarioJson['url'] = urlArchivo
             return JsonResponse(comentarioJson, safe=False)
     except Exception as e:
         messages.error(request, 'Error, no se pudo eliminar',
@@ -293,3 +312,16 @@ def eliminarComentario(request, id):
         messages.error(request, 'Error, no se pudo eliminar',
                        extra_tags='alert-danger')
         return JsonResponse({'ok': False})
+
+
+@login_required
+def descargarArchivo(request, nombre):
+    try:
+        archivo = Archivo.objects.get(url=nombre)
+        archivoUrl = str(settings.BASE_DIR) + \
+            '/Tareas/static/archivos/'+archivo.url
+        return FileResponse(open(archivoUrl, 'rb'), as_attachment=True)
+    except Exception as e:
+        messages.error(request, 'Error, no se pudo descargar',
+                       extra_tags='alert-danger')
+        return redirect('/tareas')

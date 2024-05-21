@@ -71,8 +71,8 @@ class Comentario(models.Model):
 
 class Archivo(models.Model):
     id = models.AutoField(primary_key=True)
-    tarea = models.IntegerField()
-    comentario = models.IntegerField(null=True, blank=True)
+    tarea = models.ForeignKey(Tarea, on_delete=models.CASCADE)
+    comentario = models.ForeignKey(Comentario, on_delete=models.CASCADE)
     url = models.CharField(max_length=400)
     fecha_creacion = models.DateTimeField(null=True, blank=True)
 

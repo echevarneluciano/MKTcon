@@ -37,12 +37,30 @@ $("button[name*='btEliminarComentario']").click(function () {
 $(document).ready(function () {
   $("#btnComentar").on("click", function (e) {
     e.preventDefault();
+    let formData = new FormData($("#formComentar")[0]);
     $.ajax({
       url: "/tareas/editar/tarea/agregarComentario/" + tareaId,
       type: "POST",
-      data: $("#formComentar").serialize(),
+      data: formData,
+      contentType: false,
+      processData: false,
       success: function (data) {
         valorComentario = data.id;
+        console.log(data);
+        if (data.url) {
+          url =
+            "<p>" +
+            "Archivo adjunto:&nbsp" +
+            "<a href=/tareas/editar/tarea/descargar/" +
+            data.url +
+            " " +
+            " > " +
+            data.url +
+            "</a>" +
+            "</p>";
+        } else {
+          url = "";
+        }
         $("#campoComentario").val("");
         $("#nuevoComentario").append(
           '<div class="col-12"' +
@@ -59,6 +77,7 @@ $(document).ready(function () {
             '<p class=" w-100 bd-highlight">Ahora</p>' +
             '<button class="btn btn-danger  flex-shrink-1 bd-highlight" id="btnEliminar" data-bs-toggle="modal" data-bs-target="#eliminarModal2" type="button">Eliminar</button>' +
             "</div>" +
+            url +
             "</div>" +
             "</div>" +
             "</div>"
