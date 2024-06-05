@@ -234,10 +234,17 @@ def editarTarea(request, id):
 @login_required
 def eliminarTarea(request, id):
     try:
-        Tarea.objects.filter(id=id).delete()
-        messages.success(request, 'Tarea eliminada',
-                         extra_tags='alert-success')
-        return JsonResponse({'ok': True})
+        usuario = User.objects.get(id=request.user.id)
+        tarea = Tarea.objects.get(id=id)
+        if (tarea.responsable == usuario.username):
+            tarea.delete()
+            messages.success(request, 'Tarea eliminada',
+                             extra_tags='alert-success')
+            return JsonResponse({'ok': True})
+        else:
+            messages.error(request, 'Error, no es posible eliminar tareas de otro usuario',
+                           extra_tags='alert-danger')
+            return JsonResponse({'ok': False})
     except Exception as e:
         messages.error(request, 'Error, no se pudo eliminar',
                        extra_tags='alert-danger')

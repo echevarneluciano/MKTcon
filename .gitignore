@@ -3,6 +3,8 @@
 /Homepage/__pycache__/
 /MacAmb/__pycache__/
 /MKTcon/__pycache__/
+/MKTcon/MKTcon/settings.py
+
 __pycache__/
 *.py[cod]
 *$py.class

@@ -6,7 +6,7 @@ def comentarios_archivo(connection, id):
     cursor = connection.cursor()
     query = """SELECT tareas_comentario.tarea, tareas_comentario.usuario, 
             tareas_comentario.comentario, tareas_comentario.fecha_creacion, 
-            tareas_archivo.url   
+            tareas_archivo.url, tareas_comentario.id    
             FROM tareas_archivo right join tareas_comentario 
             on tareas_archivo.comentario_id = tareas_comentario.id
             WHERE tareas_comentario.tarea = %s ORDER BY tareas_comentario.fecha_creacion DESC""" % (id)
@@ -18,6 +18,7 @@ def comentarios_archivo(connection, id):
         diferencia = timedelta(hours=3)
         fecha = dateTime - diferencia
         comentariosArchivos.append({
+            'id': row[5],
             'tarea': row[0],
             'usuario': row[1],
             'comentario': row[2],

@@ -21,7 +21,7 @@ def loginPage(request):
                 login(request, user1)
                 messages.success(request, 'Usuario logeado',
                                  extra_tags='alert-success')
-                return redirect('/macamb')
+                return redirect('/tareas')
             else:
                 messages.error(request, 'Error, al iniciar sesion',
                                extra_tags='alert-danger')
