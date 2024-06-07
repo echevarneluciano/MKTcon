@@ -1,16 +1,3 @@
-(function () {
-  const btEliminar = document.querySelectorAll(".btEliminar");
-
-  btEliminar.forEach((a) => {
-    a.addEventListener("click", function (e) {
-      const confirmar = confirm("¿Desea borrar el dispositivo?");
-      if (!confirmar) {
-        e.preventDefault();
-      }
-    });
-  });
-})();
-
 $(document).ready(function () {
   $("#dTable").DataTable({
     language: {
@@ -23,5 +10,22 @@ $(document).ready(function () {
         orderable: false,
       },
     ],
+  });
+
+  var btnConfirmarEliminar = document.getElementById("btnConfirmarEliminar");
+  var btnEliminar = $(".btn.btn-danger");
+
+  btnEliminar.on("click", function (e) {
+    var macId = $(this).attr("value");
+    btnConfirmarEliminar.addEventListener("click", function (e) {
+      $("#eliminarModal").modal("hide");
+      $.ajax({
+        url: "/macamb/borrarMac/" + macId,
+        type: "GET",
+        success: function () {
+          window.location.href = "/macamb";
+        },
+      });
+    });
   });
 });

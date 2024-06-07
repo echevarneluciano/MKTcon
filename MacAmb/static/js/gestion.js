@@ -20,10 +20,10 @@ $(document).ready(function () {
     btnConfirmarEliminar.addEventListener("click", function (e) {
       $("#eliminarModal").modal("hide");
       $.ajax({
-        url: "http://127.0.0.1:8000/macamb/borrarMac/" + macId,
+        url: "/macamb/borrarMac/" + macId,
         type: "GET",
         success: function () {
-          window.location.href = "http://127.0.0.1:8000/macamb";
+          window.location.href = "/macamb";
         },
       });
     });
