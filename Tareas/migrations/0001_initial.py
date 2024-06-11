@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
             name='Tarea',
             fields=[
                 ('id', models.AutoField(primary_key=True, serialize=False)),
+                ('orden', models.IntegerField(null=True, blank=True)),
                 ('nombre', models.CharField(max_length=150)),
                 ('etiqueta', models.CharField(max_length=50)),
                 ('descripcion', models.CharField(max_length=400)),

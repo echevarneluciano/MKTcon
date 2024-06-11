@@ -1,3 +1,8 @@
+td.titulo{
+  box-sizing: border-box;
+  white-space: pre-line;
+  word-wrap: break-word;
+}
 th, td {
     text-align: center;
     vertical-align: middle;
@@ -6,7 +11,17 @@ th, td {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-td:hover{
+td.orden{
+    font:bold;
+}
+td.fecha:hover{
+    overflow: visible;
+    text-overflow: inherit;
+    white-space: normal;
+    max-width: inherit;
+    cursor: pointer;
+}
+td.descripcion:hover{
     overflow: visible;
     text-overflow: inherit;
     white-space: normal;

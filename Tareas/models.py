@@ -22,6 +22,7 @@ class Tarea(models.Model):
     )
 
     id = models.AutoField(primary_key=True)
+    orden = models.IntegerField(null=True, blank=True)
     nombre = models.CharField(max_length=150)
     etiqueta = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=400)

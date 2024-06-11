@@ -249,8 +249,8 @@
       <table class="table table-striped" id="dTable">
         <thead>
           <tr>
-            <th hidden> </th>
-            <th>#</th>
+            <th>Orden</th>
+            <th>Id</th>
             <th>Acciones</th>
             <th>Titulo</th>
             <th>Etiqueta</th>
@@ -270,8 +270,12 @@
         <tbody>
           {% for tarea in tareas %}
           <tr>
-            <td hidden>{{tarea.id}}</td>
-            <td>{{ forloop.counter }}</td>
+            {% if tarea.orden %}
+            <td class="orden">{{tarea.orden}}</td>
+            {% else %}
+            <td></td>
+            {% endif %}
+            <td>{{tarea.id}}</td>
             <td>
               {% if tarea.estado == 1 %}
               <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
@@ -281,9 +285,9 @@
               <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a style="filter: grayscale(100%);pointer-events:none" class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
               {% endif %}
             </td>
-            <td><a href="editar/tarea/{{tarea.id}}" id="a-tarea-{{tarea.id}}"><b>{{tarea.nombre}}</b></a></td>
+            <td class="titulo"><a href="editar/tarea/{{tarea.id}}" id="a-tarea-{{tarea.id}}"><b>{{tarea.nombre}}</b></a></td>
             <td>{{tarea.etiqueta}}</td>
-            <td>{{tarea.descripcion}}</td>
+            <td class="descripcion">{{tarea.descripcion}}</td>
             <td>{{tarea.responsable}}</td>
 
             {% for estado in estados %}
@@ -296,7 +300,7 @@
             
             {% for prioridad in prioridades %}
             {% if tarea.prioridad in prioridad %}
-            <td>{{prioridad.1}}</td>
+            <td class="p_{{prioridad.1}}">{{prioridad.1}}</td>
             {% endif %}
             {% endfor %}
 
@@ -318,15 +322,15 @@
             {% endif %}
             {% endfor %}
 
-            <td>{{tarea.fecha_creacion}}</td>
-            <td id="fechaMod-{{tarea.id}}">{{tarea.fecha_modificacion}}</td>
-            <td id="fechaCierre-{{tarea.id}}">{{tarea.fecha_finalizacion|default:"-"}}</td>
+            <td class="fecha">{{tarea.fecha_creacion}}</td>
+            <td class="fecha" id="fechaMod-{{tarea.id}}">{{tarea.fecha_modificacion}}</td>
+            <td class="fecha" id="fechaCierre-{{tarea.id}}">{{tarea.fecha_finalizacion|default:"-"}}</td>
           </tr>
           {% endfor %}
         </tbody>
         <tfoot>
           <tr>
-            <th hidden> </th>
+            <th>Orden</th>
             <th>#</th>
             <th>Acciones</th>
             <th>Titulo</th>

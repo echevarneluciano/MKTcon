@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from Tareas.admin import TareaResource
 from Tareas.models import Tarea, Departamento, Sitio, Comentario, Archivo
-from django.db.models import Q
+from django.db.models import Q, F
 from datetime import datetime, timedelta
 from babel.dates import format_timedelta
 from django.contrib.auth.decorators import login_required
@@ -33,7 +33,7 @@ def homeTareas(request):
                 responsables = [request.user.username]
 
             tareas = Tarea.objects.filter(
-                Q(fecha_creacion__gte=datetime.now() - timedelta(days=30)) | ~Q(estado=3)).order_by('-fecha_creacion')
+                Q(fecha_creacion__gte=datetime.now() - timedelta(days=30)) | ~Q(estado=3)).order_by(F('orden').asc(nulls_last=True))
             tarea = Tarea()
             etiquetas = Tarea.objects.all().values_list('etiqueta', flat=True).distinct()
             estados = tarea.ESTADOS
@@ -332,3 +332,16 @@ def descargarArchivo(request, nombre):
         messages.error(request, 'Error, no se pudo descargar',
                        extra_tags='alert-danger')
         return redirect('/tareas')
+
+
+@login_required
+def ordenarTarea(request, id, orden):
+    try:
+        tarea = Tarea.objects.get(id=id)
+        tarea.orden = int(orden)+1
+        print(tarea.orden)
+        tarea.save()
+        return JsonResponse({'ok': True})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'ok': False})

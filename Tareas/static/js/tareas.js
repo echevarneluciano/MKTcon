@@ -59,6 +59,10 @@ $(document).ready(function () {
       let pauseId;
       let stopId;
 
+      $(".p_Baja").css("background-color", "#A4CC72");
+      $(".p_Alta").css("background-color", "#d23449");
+      $(".p_Media").css("background-color", "#FFD04D");
+
       playEvent = plays.forEach((el) => {
         el.addEventListener("click", function (e) {
           playId = $(this).attr("id");
@@ -181,6 +185,22 @@ $(document).ready(function () {
           });
         });
       });
+      table.on("row-reorder", function (e, diff, edit) {
+        if (diff.length > 0) {
+          for (var i = 0; i < diff.length; i++) {
+            var orden = diff[i].newPosition;
+            var id = diff[i].node.cells[1].innerText;
+            console.log(orden, id);
+            $.ajax({
+              url: "/tareas/ordenar/tarea/" + id + "/" + orden,
+              type: "GET",
+              success: function (data) {
+                console.log(data);
+              },
+            });
+          }
+        }
+      });
     },
     initComplete: function () {
       this.api()
@@ -188,21 +208,16 @@ $(document).ready(function () {
         .every(function () {
           let column = this;
           const columnas = [6, 7, 9, 10, 11, 12];
-          // Create select element
           let select = document.createElement("select");
           if (columnas.includes(column.index())) {
             select.add(new Option(""));
             column.footer().replaceChildren(select);
           }
-
-          // Apply listener for user change in value
           select.addEventListener("change", function () {
             var val = DataTable.util.escapeRegex(select.value);
 
             column.search(val ? "^" + val + "$" : "", true, false).draw();
           });
-
-          // Add list of options
           column
             .data()
             .unique()
@@ -217,6 +232,12 @@ $(document).ready(function () {
     },
     responsive: true,
     scrollX: true,
+
+    rowReorder: true,
+    columnDefs: [
+      { orderable: true, className: "reorder", targets: 0 },
+      { orderable: false, targets: "_all" },
+    ],
   });
 
   table

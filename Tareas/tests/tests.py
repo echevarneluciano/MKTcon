@@ -73,10 +73,29 @@ def creaComentario():
 
 class TareaViewsTestCase(TestCase):
 
-    def test_home(self):
+    def test_get_home(self):
         self.credential = {
             'username': 'usuario_test', 'password': 'pass_test'
         }
         usuario = User.objects.create_user(**self.credential)
-        response = self.client.get('/tareas/', follow=True, user=usuario)
+        response = self.client.get('/tareas/', user=usuario, follow=True)
         self.assertEqual(response.status_code, 200)
+
+    def test_post_home(self):
+        user = User.objects.create()
+        self.client.force_login(user)
+        response_post = self.client.post('/tareas/', {
+            'nombre': 'tarea test',
+            'responsable': 'luciano.echevarne',
+            'etiqueta': 'test',
+            'prioridad': '1',
+            'categoria': '1',
+            'sitio': '1',
+            'departamento': '1',
+            'estado': '2',
+            'fecha_creacion': datetime(
+                2021, 4, 10, 10, 10, 10, 10, None),
+            'fecha_modificacion': datetime(
+                2021, 4, 10, 10, 10, 10, 10, None),
+        })
+        self.assertEqual(response_post.status_code, 200)
