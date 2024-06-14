@@ -11,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db import connection
-from .querys import comentarios_archivo
+from .querys import comentarios_archivo, ultimo_orden, ordenar_tareas
 
 # Create your views here.
 
@@ -20,7 +20,6 @@ from .querys import comentarios_archivo
 def homeTareas(request):
     try:
         if request.method == 'GET':
-
             usuario = User.objects.get(id=request.user.id)
             userGroup = User.objects.get(
                 id=request.user.id
@@ -60,6 +59,7 @@ def homeTareas(request):
                 fecha_creacion=datetime.now(),
                 fecha_modificacion=datetime.now(),
                 responsable=request.POST['responsable'],
+                orden=ultimo_orden(request.POST['responsable']),
             )
             if len(request.FILES) > 0:
                 archivo = request.FILES['archivo']
@@ -74,6 +74,7 @@ def homeTareas(request):
                     fecha_creacion=datetime.now(),
                 )
             if (creada):
+                ordenar_tareas(request.user)
                 messages.success(request, 'Tarea agregada',
                                  extra_tags='alert-success')
             else:
@@ -137,6 +138,7 @@ def pauseTarea(request, id):
 def stopTarea(request, id):
     try:
         buscada = Tarea.objects.filter(id=id)
+        ordenar_tareas(request.user)
         if (buscada[0].fecha_creacion == buscada[0].fecha_modificacion):
             Tarea.objects.filter(id=id).update(
                 estado=3,
@@ -337,11 +339,18 @@ def descargarArchivo(request, nombre):
 @login_required
 def ordenarTarea(request, id, orden):
     try:
-        tarea = Tarea.objects.get(id=id)
-        tarea.orden = int(orden)+1
-        print(tarea.orden)
-        tarea.save()
-        return JsonResponse({'ok': True})
+        userGroup = User.objects.get(
+            id=request.user.id
+        ).groups.all()
+        esSupervisor = (userGroup.__len__() == 1) and (
+            userGroup[0].name == 'Supervisor')
+        if esSupervisor:
+            tarea = Tarea.objects.get(id=id)
+            tarea.orden = int(orden)+1
+            tarea.save()
+            return JsonResponse({'ok': True})
+        else:
+            return JsonResponse({'ok': False})
     except Exception as e:
         print(e)
         return JsonResponse({'ok': False})

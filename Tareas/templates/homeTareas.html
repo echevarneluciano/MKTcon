@@ -245,6 +245,7 @@
         </div>
       </div>
     </div>
+    <div id="info"></div>
     <div class="table-responsive py-2">
       <table class="table table-striped" id="dTable">
         <thead>
@@ -273,7 +274,7 @@
             {% if tarea.orden %}
             <td class="orden">{{tarea.orden}}</td>
             {% else %}
-            <td></td>
+            <td>Sin orden</td>
             {% endif %}
             <td>{{tarea.id}}</td>
             <td>

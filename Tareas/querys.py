@@ -1,5 +1,6 @@
-
 from datetime import timedelta
+from Tareas.models import Tarea
+from django.db.models import Q, F
 
 
 def comentarios_archivo(connection, id):
@@ -27,3 +28,20 @@ def comentarios_archivo(connection, id):
         })
     cursor.close()
     return (comentariosArchivos)
+
+
+def ultimo_orden(responsable):
+    tareas_responsable = Tarea.objects.filter(
+        Q(responsable=responsable) & ~Q(estado=3)).order_by('-orden')
+    if (tareas_responsable.count() == 0):
+        return 1
+    else:
+        return tareas_responsable[0].orden+1
+
+
+def ordenar_tareas(responsable):
+    tareas_responsable = Tarea.objects.filter(
+        Q(responsable=responsable) & ~Q(estado=3)).order_by('orden')
+    for (i, tarea) in enumerate(tareas_responsable):
+        tarea.orden = i+1
+        tarea.save()

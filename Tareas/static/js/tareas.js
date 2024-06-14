@@ -185,17 +185,44 @@ $(document).ready(function () {
           });
         });
       });
-      table.on("row-reorder", function (e, diff, edit) {
+      $(".no-reordenable, .permitir-reordenar").on("click", function (e) {
+        var responsable = $(
+          "#dTable_wrapper > div.dataTables_scroll > div.dataTables_scrollFoot > div > table > tfoot > tr > th:nth-child(7) > select"
+        ).val();
+        if (responsable == "") {
+          $(".permitir-reordenar").attr("class", "no-reordenable");
+          $("#info").children().remove();
+          $("#info").append(
+            '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+              "<strong>Para orden de prioridad</strong>, favor de seleccionar un unico responsable primero." +
+              '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+              "</div>"
+          );
+        } else {
+          $(".no-reordenable").attr("class", "permitir-reordenar");
+        }
+      });
+      table.on("row-reordered", function (e, diff, edit) {
+        var orden;
+        var id;
         if (diff.length > 0) {
           for (var i = 0; i < diff.length; i++) {
-            var orden = diff[i].newPosition;
-            var id = diff[i].node.cells[1].innerText;
-            console.log(orden, id);
+            orden = diff[i].newPosition;
+            id = diff[i].node.cells[1].innerText;
+            $(diff[i].node.cells[0]).html(orden + 1);
             $.ajax({
               url: "/tareas/ordenar/tarea/" + id + "/" + orden,
               type: "GET",
               success: function (data) {
-                console.log(data);
+                if (!data.ok) {
+                  $("#info").children().remove();
+                  $("#info").append(
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                      "<strong>Permiso de ordenamiento</strong>, solo es permitido por supervisores." +
+                      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      "</div>"
+                  );
+                }
               },
             });
           }
@@ -232,14 +259,21 @@ $(document).ready(function () {
     },
     responsive: true,
     scrollX: true,
-
-    rowReorder: true,
+    rowReorder: {
+      selector: ".permitir-reordenar",
+    },
     columnDefs: [
       { orderable: true, className: "reorder", targets: 0 },
       { orderable: false, targets: "_all" },
+      {
+        targets: 0,
+        className: "permitir-reordenar",
+        createdCell: function (td, cellData, rowData, row, col) {
+          td.className = "no-reordenable";
+        },
+      },
     ],
   });
-
   table
     .column(7)
     .search("(?:Pausada|En proceso)", true, false, true)
