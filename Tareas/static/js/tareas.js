@@ -76,25 +76,37 @@ $(document).ready(function () {
               url: "/tareas/play/tarea/" + playId,
               type: "GET",
               success: function (data) {
-                var id = data[0].id;
-                var estadoCambiar = document.getElementById("estado-" + id);
-                var fechaMod = document.getElementById("fechaMod-" + id);
-                estadoCambiar.innerHTML = "En proceso";
-                var fechaSinFormato = data[0].fecha_modificacion;
-                var fechaFormateada =
-                  moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
-                fechaMod.innerHTML = fechaFormateada;
-                var desactivarPlay = document.getElementById("a-play-" + id);
-                var desactivarPause = document.getElementById("a-pause-" + id);
-                var desactivarStop = document.getElementById("a-stop-" + id);
-                desactivarPause.style.filter = "grayscale(0%)";
-                desactivarPause.style.pointerEvents = "auto";
-                desactivarStop.style.filter = "grayscale(0%)";
-                desactivarStop.style.pointerEvents = "auto";
-                desactivarPlay.style.filter = "grayscale(100%)";
-                desactivarPlay.style.pointerEvents = "none";
-                e.preventDefault();
-                e.stopPropagation();
+                if (data.error) {
+                  $("#info").children().remove();
+                  $("#info").append(
+                    '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+                      "<strong>Error de permiso</strong>, solo el responsable de esta tarea puede realizar esta accion." +
+                      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      "</div>"
+                  );
+                } else {
+                  var id = data[0].id;
+                  var estadoCambiar = document.getElementById("estado-" + id);
+                  var fechaMod = document.getElementById("fechaMod-" + id);
+                  estadoCambiar.innerHTML = "En proceso";
+                  var fechaSinFormato = data[0].fecha_modificacion;
+                  var fechaFormateada =
+                    moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
+                  fechaMod.innerHTML = fechaFormateada;
+                  var desactivarPlay = document.getElementById("a-play-" + id);
+                  var desactivarPause = document.getElementById(
+                    "a-pause-" + id
+                  );
+                  var desactivarStop = document.getElementById("a-stop-" + id);
+                  desactivarPause.style.filter = "grayscale(0%)";
+                  desactivarPause.style.pointerEvents = "auto";
+                  desactivarStop.style.filter = "grayscale(0%)";
+                  desactivarStop.style.pointerEvents = "auto";
+                  desactivarPlay.style.filter = "grayscale(100%)";
+                  desactivarPlay.style.pointerEvents = "none";
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
               },
             });
           });
@@ -114,29 +126,41 @@ $(document).ready(function () {
               url: "/tareas/pause/tarea/" + pauseId,
               type: "GET",
               success: function (data) {
-                var id = data.tarea[0].id;
-                var estadoCambiar = document.getElementById("estado-" + id);
-                var acumuladoCambiar = document.getElementById(
-                  "acumulado-" + id
-                );
-                var fechaMod = document.getElementById("fechaMod-" + id);
-                var fechaSinFormato = data.tarea[0].fecha_modificacion;
-                var fechaFormateada =
-                  moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
-                fechaMod.innerHTML = fechaFormateada;
-                estadoCambiar.innerHTML = "Pausada";
-                acumuladoCambiar.innerHTML = data.acumulado;
-                var desactivarPlay = document.getElementById("a-play-" + id);
-                var desactivarPause = document.getElementById("a-pause-" + id);
-                var desactivarStop = document.getElementById("a-stop-" + id);
-                desactivarStop.style.filter = "grayscale(0%)";
-                desactivarStop.style.pointerEvents = "auto";
-                desactivarPause.style.filter = "grayscale(100%)";
-                desactivarPause.style.pointerEvents = "none";
-                desactivarPlay.style.filter = "grayscale(0%)";
-                desactivarPlay.style.pointerEvents = "auto";
-                e.preventDefault();
-                e.stopPropagation();
+                if (data.error) {
+                  $("#info").children().remove();
+                  $("#info").append(
+                    '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+                      "<strong>Error de permiso</strong>, solo el responsable de esta tarea puede realizar esta accion." +
+                      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      "</div>"
+                  );
+                } else {
+                  var id = data.tarea[0].id;
+                  var estadoCambiar = document.getElementById("estado-" + id);
+                  var acumuladoCambiar = document.getElementById(
+                    "acumulado-" + id
+                  );
+                  var fechaMod = document.getElementById("fechaMod-" + id);
+                  var fechaSinFormato = data.tarea[0].fecha_modificacion;
+                  var fechaFormateada =
+                    moment(fechaSinFormato).format("DD MMMM YYYY HH:mm");
+                  fechaMod.innerHTML = fechaFormateada;
+                  estadoCambiar.innerHTML = "Pausada";
+                  acumuladoCambiar.innerHTML = data.acumulado;
+                  var desactivarPlay = document.getElementById("a-play-" + id);
+                  var desactivarPause = document.getElementById(
+                    "a-pause-" + id
+                  );
+                  var desactivarStop = document.getElementById("a-stop-" + id);
+                  desactivarStop.style.filter = "grayscale(0%)";
+                  desactivarStop.style.pointerEvents = "auto";
+                  desactivarPause.style.filter = "grayscale(100%)";
+                  desactivarPause.style.pointerEvents = "none";
+                  desactivarPlay.style.filter = "grayscale(0%)";
+                  desactivarPlay.style.pointerEvents = "auto";
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
               },
             });
           });
@@ -156,30 +180,42 @@ $(document).ready(function () {
               url: "/tareas/stop/tarea/" + stopId,
               type: "GET",
               success: function (data) {
-                var id = data.tarea[0].id;
-                var estadoCambiar = document.getElementById("estado-" + id);
-                var acumuladoCambiar = document.getElementById(
-                  "acumulado-" + id
-                );
-                var fechaFin = document.getElementById("fechaCierre-" + id);
-                var fechaCierreSinFormato = data.tarea[0].fecha_finalizacion;
-                var fechaCierreFormateada = moment(
-                  fechaCierreSinFormato
-                ).format("DD MMMM YYYY HH:mm");
-                fechaFin.innerHTML = fechaCierreFormateada;
-                estadoCambiar.innerHTML = "Finalizada";
-                acumuladoCambiar.innerHTML = data.acumulado;
-                var desactivarPlay = document.getElementById("a-play-" + id);
-                var desactivarPause = document.getElementById("a-pause-" + id);
-                var desactivarStop = document.getElementById("a-stop-" + id);
-                desactivarStop.style.filter = "grayscale(100%)";
-                desactivarStop.style.pointerEvents = "none";
-                desactivarPause.style.filter = "grayscale(100%)";
-                desactivarPause.style.pointerEvents = "none";
-                desactivarPlay.style.filter = "grayscale(100%)";
-                desactivarPlay.style.pointerEvents = "none";
-                e.preventDefault();
-                e.stopPropagation();
+                if (data.error) {
+                  $("#info").children().remove();
+                  $("#info").append(
+                    '<div class="alert alert-warning alert-dismissible fade show" role="alert">' +
+                      "<strong>Error de permiso</strong>, solo el responsable de esta tarea puede realizar esta accion." +
+                      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      "</div>"
+                  );
+                } else {
+                  var id = data.tarea[0].id;
+                  var estadoCambiar = document.getElementById("estado-" + id);
+                  var acumuladoCambiar = document.getElementById(
+                    "acumulado-" + id
+                  );
+                  var fechaFin = document.getElementById("fechaCierre-" + id);
+                  var fechaCierreSinFormato = data.tarea[0].fecha_finalizacion;
+                  var fechaCierreFormateada = moment(
+                    fechaCierreSinFormato
+                  ).format("DD MMMM YYYY HH:mm");
+                  fechaFin.innerHTML = fechaCierreFormateada;
+                  estadoCambiar.innerHTML = "Finalizada";
+                  acumuladoCambiar.innerHTML = data.acumulado;
+                  var desactivarPlay = document.getElementById("a-play-" + id);
+                  var desactivarPause = document.getElementById(
+                    "a-pause-" + id
+                  );
+                  var desactivarStop = document.getElementById("a-stop-" + id);
+                  desactivarStop.style.filter = "grayscale(100%)";
+                  desactivarStop.style.pointerEvents = "none";
+                  desactivarPause.style.filter = "grayscale(100%)";
+                  desactivarPause.style.pointerEvents = "none";
+                  desactivarPlay.style.filter = "grayscale(100%)";
+                  desactivarPlay.style.pointerEvents = "none";
+                  e.preventDefault();
+                  e.stopPropagation();
+                }
               },
             });
           });
@@ -219,6 +255,15 @@ $(document).ready(function () {
                   $("#info").append(
                     '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
                       "<strong>Permiso de ordenamiento</strong>, solo es permitido por supervisores." +
+                      '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
+                      "</div>"
+                  );
+                }
+                if (data.esCerrada) {
+                  $("#info").children().remove();
+                  $("#info").append(
+                    '<div class="alert alert-danger alert-dismissible fade show" role="alert">' +
+                      "<strong>Error de ordenamiento</strong>, desactive check , Ver finalizadas, en filtro de columnas, no es posible ordenar tareas finalizadas." +
                       '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                       "</div>"
                   );

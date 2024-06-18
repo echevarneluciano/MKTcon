@@ -90,7 +90,10 @@ def homeTareas(request):
 @login_required
 def playTarea(request, id):
     try:
+        usuario = User.objects.get(id=request.user.id)
         buscada = Tarea.objects.filter(id=id)
+        if (buscada[0].responsable != usuario.username):
+            return JsonResponse({'error': True}, safe=False)
         if (buscada[0].estado == 2):
             Tarea.objects.filter(id=id).update(
                 estado=1,
@@ -108,7 +111,10 @@ def playTarea(request, id):
 @login_required
 def pauseTarea(request, id):
     try:
+        usuario = User.objects.get(id=request.user.id)
         buscada = Tarea.objects.filter(id=id)
+        if (buscada[0].responsable != usuario.username):
+            return JsonResponse({'error': True}, safe=False)
         if (buscada[0].estado == 1):
             actualizaAcumulado(id)
             Tarea.objects.filter(id=id).update(
@@ -121,6 +127,7 @@ def pauseTarea(request, id):
             )
             tarea = list(buscada.values())
             tarea_acumulado = {'acumulado': acumulado_esp, 'tarea': tarea}
+            print('Entra igual')
             return JsonResponse(tarea_acumulado, safe=False)
         else:
             tarea = list(buscada.values())
@@ -138,6 +145,9 @@ def pauseTarea(request, id):
 def stopTarea(request, id):
     try:
         buscada = Tarea.objects.filter(id=id)
+        usuario = User.objects.get(id=request.user.id)
+        if (buscada[0].responsable != usuario.username):
+            return JsonResponse({'error': True}, safe=False)
         ordenar_tareas(request.user)
         if (buscada[0].fecha_creacion == buscada[0].fecha_modificacion):
             Tarea.objects.filter(id=id).update(
@@ -346,9 +356,13 @@ def ordenarTarea(request, id, orden):
             userGroup[0].name == 'Supervisor')
         if esSupervisor:
             tarea = Tarea.objects.get(id=id)
-            tarea.orden = int(orden)+1
-            tarea.save()
-            return JsonResponse({'ok': True})
+            if tarea.estado == 3:
+                ordenar_tareas(request.user)
+                return JsonResponse({'esCerrada': True})
+            else:
+                tarea.orden = int(orden)+1
+                tarea.save()
+                return JsonResponse({'ok': True})
         else:
             return JsonResponse({'ok': False})
     except Exception as e:

@@ -49,7 +49,7 @@
                   <div class="form-group col-md-4">
                     <label for="etiqueta">Etiqueta</label>
                     <br>
-                    <select class="form-select" style="width: 100%" name="etiqueta" id="etiqueta">
+                    <select class="form-select" style="width: 100%" name="etiqueta" id="etiqueta" required>
                       {% for etiqueta in etiquetas %}
                       <option value="{{etiqueta}}">{{etiqueta}}</option>
                       {% endfor %}
