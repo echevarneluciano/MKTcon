@@ -1,9 +1,9 @@
 td.titulo{
-  box-sizing: border-box;
   white-space: pre-line;
   word-wrap: break-word;
+  border-collapse: collapse;
 }
-th, td {
+td.descripcion {
     text-align: center;
     vertical-align: middle;
     max-width: 15ch;
@@ -13,6 +13,9 @@ th, td {
 }
 td.orden{
     font:bold;
+}
+td.acciones{
+    width: 100px;
 }
 td.fecha:hover{
     overflow: visible;

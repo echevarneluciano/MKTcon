@@ -277,7 +277,7 @@
             <td>Sin orden</td>
             {% endif %}
             <td>{{tarea.id}}</td>
-            <td>
+            <td class="acciones">
               {% if tarea.estado == 1 %}
               <a style="filter: grayscale(100%);pointer-events:none" class="a-play" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#playModal" id="a-play-{{tarea.id}}"><img src="{% static 'img/play.png' %}" width="21" alt=""></a> <a class="a-pause" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#pauseModal" id="a-pause-{{tarea.id}}"><img src="{% static 'img/pausa.png' %}" width="25" alt=""></a> <a class="a-stop" value="{{tarea.nombre}}" data-bs-toggle="modal" data-bs-target="#stopModal" id="a-stop-{{tarea.id}}"><img src="{% static 'img/stop.png' %}" width="23" alt=""></a>
               {% elif tarea.estado == 2 %}
